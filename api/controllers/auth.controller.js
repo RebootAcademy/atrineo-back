@@ -17,7 +17,11 @@ const signup = async (req, res) => {
 
     // User is created
     const newUser = new User({
-      
+      organization: user.organization,
+      name: user.name,
+      email: user.email,
+      password: hashedPassword,
+      role: user.role || 'worker'
     })
     await newUser.save()
 
