@@ -1,14 +1,13 @@
+// location.model.js
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-const locationSchema = new mongoose.Schema({
-  ID_1: { type: Number },
-  ID_2: { type: Number },
-  ID_3: { type: Number, unique: true },
-  NAME_1: { type: String },
-  NAME_2: { type: String },
-  NAME_3: { type: String, unique: true },
+const locationSchema = new Schema({
+  country: { type: Schema.Types.ObjectId, ref: 'Country' },
+  region: { type: Schema.Types.ObjectId, ref: 'Region' },
+  district: { type: Schema.Types.ObjectId, ref: 'District' }
 })
 
-const LocationModel = mongoose.model('location', locationSchema)
+const LocationModel = mongoose.model('Location', locationSchema)
 
 module.exports = LocationModel
