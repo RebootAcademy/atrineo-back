@@ -1,4 +1,5 @@
 const Data = require('../models/data.model')
+import transformData from '../utils/transformData'
 
 const createData = async (req, res) => {
   try {

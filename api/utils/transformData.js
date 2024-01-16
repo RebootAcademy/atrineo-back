@@ -1,4 +1,4 @@
-const transformData = (coordinatesString) => {
+export const transformData = (coordinatesString) => {
   // Extract the coordinates within the parentheses
   const coordinatesSubstring = coordinatesString.substring(coordinatesString.indexOf('(') + 1, coordinatesString.lastIndexOf(')')).replace(/[()]/g, '')
 
