@@ -18,7 +18,7 @@ const dataSchema = new mongoose.Schema({
     type: String,
   },
   geometry: {
-    type: Number,
+    type: [[Number]],
   },
   district_population: {
     type: Number,
