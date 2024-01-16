@@ -2,9 +2,15 @@ const Data = require('../models/data.model')
 
 const createData = async (req, res) => {
   try {
-    const newData = new Data(req.body)
-    const savedData = await newData.save()
-    return res.status(201).json(savedData)
+    req.body.forEach(element => {
+      element.geometry = transformData(element.geometry)
+      const newData = new Data(element)
+      newData.save()
+    })
+
+    return res.status(201).json(
+      { message: 'Data created successfully' },
+    )
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
