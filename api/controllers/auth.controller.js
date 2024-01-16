@@ -7,7 +7,7 @@ const Organization = require('../models/organization.model')
 // CREATE/POST - user register
 const signup = async (req, res) => {
   try {
-    const { email, organization } = req.body
+    const { name, email, password, role, organization } = req.body
 
     const userEmail = await User.findOne({ email })
     if (userEmail) {
@@ -25,10 +25,16 @@ const signup = async (req, res) => {
 
     // Hash the password before saving it to the database
     const salt = genSaltSync(parseInt(process.env.BCRYPT_SALTROUNDS) || 10)
-    req.body.password = hashSync(req.body.password, salt)
+    const hashedPassword = hashSync(password, salt)
 
-    // user is created
-    const newUser = new User(req.body)
+    // User is created
+    const newUser = new User({
+      organization: organization,
+      name: name,
+      email: email,
+      password: hashedPassword,
+      role: role || 'worker'
+    })
     await newUser.save()
 
     // create a JSON Web Token
