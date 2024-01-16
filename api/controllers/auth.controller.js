@@ -1,24 +1,34 @@
 const { compareSync, genSaltSync, hashSync } = require('bcrypt')
 const { sign } = require('jsonwebtoken')
+
 const User = require('../models/user.model')
 const Organization = require('../models/organization.model')
 
+// CREATE/POST - user register
 const signup = async (req, res) => {
   try {
-    const { user, organization } = req.body
+    const { email, organization } = req.body
 
-    const userEmail = await User.findOne({ email: user.email })
+    const userEmail = await User.findOne({ email })
     if (userEmail) {
-      return res.status(400).json({ message: 'Email already exists' })
+      return res.status(400).json(
+        { message: 'Email already exists' }
+      )
     }
 
-    const salt = genSaltSync(parseInt(process.env.BCRYPT_SALTROUNDS) || 10)
-    const hashedPassword = hashSync(user.passwords, salt)
+    const userOrganization = await Organization.findById(organization)
+    if (!userOrganization) {
+      return res.status(404).json(
+        { message: 'Organization not found' }
+      )
+    }
 
-    // User is created
-    const newUser = new User({
-      
-    })
+    // Hash the password before saving it to the database
+    const salt = genSaltSync(parseInt(process.env.BCRYPT_SALTROUNDS) || 10)
+    req.body.password = hashSync(req.body.password, salt)
+
+    // user is created
+    const newUser = new User(req.body)
     await newUser.save()
 
     // create a JSON Web Token
@@ -37,24 +47,27 @@ const signup = async (req, res) => {
   }
 }
 
+// POST - user login
 const login = async (req, res) => {
   try {
-    const { email, password, remember } = req.body
+    const { email, password, /* remember */ } = req.body
 
     const user = await User.findOne({ email })
 
     if(!user || !compareSync(password, user.password)) {
-      return res.status(500).send({ message: 'User or Password incorrect' })
+      return res.status(500).send(
+        { message: 'User or Password incorrect' }
+      )
     }
 
-    // Set expiration time
+    /* // Set expiration time
     const options = {}
     if (!remember) {
       options.expiresIn = '2d'
-    }
+    } */
 
     // Create a JSON Web Token
-    const token = sign({ email: user.email }, process.env.JWT_SECRET, options)
+    const token = sign({ email: user.email }, process.env.JWT_SECRET, /* options */)
 
     return res.status(200).json({
       message: 'User logged in',

@@ -12,6 +12,7 @@ const organizationSchema = new mongoose.Schema({
     type: String,
     set: toLowercase,
     required: [true, 'Please insert email'],
+    unique: [true, 'Email address already exists'],
     validate: {
       validator: checkEmail,
       message: props => `${props.value} is not a valid email format`
