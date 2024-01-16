@@ -1,5 +1,5 @@
 const { verify } = require('jsonwebtoken')
-const User = require('../api/models/user.model')
+const User = require('../models/user.model')
 
 const isAuth = (req, res, next) => {
   try {

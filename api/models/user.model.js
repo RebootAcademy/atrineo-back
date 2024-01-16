@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please insert email'],
     unique: [true, 'Email address already exists'],
     validate: {
-      validator: checkEmail(v),
+      validator: checkEmail,
       message: props => `${props.value} is not a valid email format`
     },
   },
