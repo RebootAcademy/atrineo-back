@@ -5,12 +5,12 @@ const createOrganization = async (req, res) => {
   try {
     const { email } = req.body
 
-    /* const organizaionEmail = await Organization.findOne({ email })
+    const organizaionEmail = await Organization.findOne({ email })
     if (organizaionEmail) {
       return res.status(400).json(
         { message: 'Email already exists' }
       )
-    } */
+    }
 
     // organization is created
     const newOrganization = new Organization(req.body)
