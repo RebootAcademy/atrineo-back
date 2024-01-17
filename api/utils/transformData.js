@@ -1,4 +1,4 @@
-export const transformData = (coordinatesString) => {
+const transformData = (coordinatesString) => {
   // Extract the coordinates within the parentheses
   const coordinatesSubstring = coordinatesString.substring(coordinatesString.indexOf('(') + 1, coordinatesString.lastIndexOf(')')).replace(/[()]/g, '')
 
@@ -10,4 +10,8 @@ export const transformData = (coordinatesString) => {
     const [lng, lat] = pair.split(' ').map(parseFloat)
     return [lng, lat]
   })
+}
+
+module.exports = {
+  transformData
 }
