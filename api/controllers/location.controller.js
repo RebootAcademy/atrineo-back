@@ -1,11 +1,23 @@
 const Location = require('../models/location.model')
 
-const createLocation = async (req, res) => {
+const createLocation = async (countryId, regionId, districtId) => {
   try {
-    const newLocation = await Location.create(req.body)
-    res.status(201).json(newLocation)
+    const newLocation = new Location({
+      country: countryId,
+      region: regionId,
+      district: districtId,
+    });
+
+    await newLocation.save();
+
+    console.log({ 
+      message: 'Location added to the database successfully.'
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    console.error({
+      message: 'Error adding location to the database',
+      error: error.message,
+    })
   }
 }
 
