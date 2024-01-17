@@ -15,4 +15,4 @@ router
   .patch('/:id', updateDistrict)
   .delete('/:id', deleteDistrict)
 
-  module.exports = router
+module.exports = router

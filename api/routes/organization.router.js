@@ -8,14 +8,11 @@ const {
   deleteOrganization
 } = require('../controllers/organization.controller')
 
-
-router.post('/', createOrganization)
-
-router.get('/', getOrganizations)
-router.get('/:id', getOrganization)
-
-router.patch('/:id', updateOrganization)
-
-router.delete('/:id', deleteOrganization)
+router
+  .post('/', createOrganization)
+  .get('/', getOrganizations)
+  .get('/:id', getOrganization)
+  .patch('/:id', updateOrganization)
+  .delete('/:id', deleteOrganization)
 
 module.exports = router
