@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 
 const locationSchema = new Schema({
   country: { type: Schema.Types.ObjectId, ref: 'Country' },
+  state: { type: Schema.Types.ObjectId, ref: 'State' },
   region: { type: Schema.Types.ObjectId, ref: 'Region' },
   district: { type: Schema.Types.ObjectId, ref: 'District' }
 })

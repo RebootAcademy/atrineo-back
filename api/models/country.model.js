@@ -2,9 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const countrySchema = new Schema({
+  iso: { type: String },
   name: { type: String },
-  polygon: { type: [[Number]] },
-  geojsonId: { type: Number }
+  geojsonId: { type: Number },
+  geometry: { type: [[[[Number]]]] },
 })
 
 const CountryModel = mongoose.model('Country', countrySchema)

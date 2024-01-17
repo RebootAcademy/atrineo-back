@@ -4,8 +4,8 @@ const Schema = mongoose.Schema
 
 const districtSchema = new Schema({
   name: { type: String },
-  polygon: { type: [[Number]] },
   geojsonId: { type: Number },
+  geometry: { type: [[[[Number]]]] },
   region: { type: Schema.Types.ObjectId, ref: 'Region' }
 })
 

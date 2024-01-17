@@ -1,4 +1,4 @@
-const Region = require('../models/country.model')
+const Region = require('../models/region.model')
 
 const createRegion = async (req, res) => {
   try {
