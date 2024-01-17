@@ -32,7 +32,7 @@ const isAuth = (req, res, next) => {
 }
 
 const isAdmin = async (req, res, next) => {
-  if(res.locals.user.role !== 'admin') { 
+  if(res.locals.user.role === 'worker') { 
     return res.status(500).send({ message:'Unauthorized' });
   }
 
