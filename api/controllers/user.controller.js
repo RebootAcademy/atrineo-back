@@ -6,7 +6,13 @@ const Organization = require('../models/organization.model')
 // CREATE/POST - create a new user
 const createUser = async (req, res) => {
   try {
-    const { email, organization } = req.body
+    let { organization } = req.params
+
+    if (!organization && res.locals.user) {
+      organization = res.locals.user.organization.toString()
+    }
+
+    const { name, email, password, role } = req.body
 
     const userEmail = await User.findOne({ email })
     if (userEmail) {
@@ -24,11 +30,18 @@ const createUser = async (req, res) => {
 
     // Hash the password before saving it to the database
     const salt = genSaltSync(parseInt(process.env.BCRYPT_SALTROUNDS))
-    req.body.password = hashSync(req.body.password, salt)
+    const hashedPassword = hashSync(password, salt)
 
-    // user is created
-    const newUser = new User(req.body)
-    await newUser.save()
+    // User is created
+    const newUser = new User({
+      organization: organization,
+      name: name,
+      email: email,
+      password: hashedPassword,
+      role: role || 'worker'
+    })
+    newUser.save()
+
 
     return res.status(201).json({
       message: 'User created successfully',

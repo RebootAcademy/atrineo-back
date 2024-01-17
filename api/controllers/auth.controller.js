@@ -6,8 +6,15 @@ const Organization = require('../models/organization.model')
 
 // CREATE/POST - user register
 const signup = async (req, res) => {
-  try {
-    const { name, email, password, role, organization } = req.body
+  /* try {
+    const { organization } = req.params
+
+
+    if (!organization && res.locals.user) {
+      organization = res.locals.user.organization.toString()
+    }
+
+    const { name, email, password, role } = req.body
 
     const userEmail = await User.findOne({ email })
     if (userEmail) {
@@ -50,7 +57,7 @@ const signup = async (req, res) => {
       message: 'error creating user',
       description: error.message
     })
-  }
+  } */
 }
 
 // POST - user login
