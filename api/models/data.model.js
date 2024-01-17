@@ -4,6 +4,7 @@ const dataSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   latitude: {
     type: Number,
@@ -11,45 +12,48 @@ const dataSchema = new mongoose.Schema({
   longitude: {
     type: Number,
   },
-  district_id: {
+  districtId: {
     type: Number,
   },
-  district_name: {
+  districtName: {
     type: String,
   },
   geometry: {
     type: [[Number]],
   },
-  district_population: {
+  districtPopulation: {
     type: Number,
   },
   patents: {
     type: Number,
   },
-  research_investment: {
+  researchInvestment: {
     type: Number,
   },
-  it_companies: {
+  itCompanies: {
     type: Number,
   },
   gnp: {
     type: Number,
   },
-  scholarship_years: {
+  scholarshipYears: {
     type: Number,
   },
-  innovation_ecosystem: {
+  innovationEcosystem: {
     type: Boolean,
   },
-  financing_access: {
+  financingAccess: {
     type: Boolean,
   },
-  life_quality: {
+  lifeQuality: {
     type: String,
     enum: ['Alta', 'Media', 'Baja']
   },
-  gov_funds_received: {
+  govFundsReceived: {
     type: Boolean,
+  },
+  locationId: {
+    type: Number,
   }
 })
 
