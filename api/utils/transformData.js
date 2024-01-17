@@ -12,6 +12,6 @@ const transformData = (coordinatesString) => {
   })
 }
 
-module.exports.transformData = (coordinatesString) => {
-  // existing function logic
+module.exports = {
+  transformData
 }

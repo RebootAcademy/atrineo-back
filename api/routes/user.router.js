@@ -8,7 +8,6 @@ const {
   deleteUser
 } = require('../controllers/user.controller')
 
-
 router.post('/:organization?', createUser)
 
 router.get('/', getUsers)

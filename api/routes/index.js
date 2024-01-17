@@ -15,7 +15,7 @@ const districtRouter = require('./district.router.js')
 const authRouter = require('./auth.router.js')
 const dataRouter = require('./data.router.js'); 
 
-router.use('/users', userRouter)
+router.use('/users', isAuth, userRouter)
 router.use('/organizations', organizationRouter)
 router.use('/location', locationRouter)
 router.use('/country', countryRouter)
