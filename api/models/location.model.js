@@ -9,6 +9,6 @@ const locationSchema = new Schema({
   district: { type: Schema.Types.ObjectId, ref: 'District' }
 })
 
-const LocationModel = mongoose.model('Location', locationSchema)
+const LocationModel = mongoose.model('location', locationSchema)
 
 module.exports = LocationModel

@@ -2,10 +2,29 @@ const Country = require('../models/country.model')
 
 const createCountry = async (req, res) => {
   try {
-    const newCountry = await Country.create(req.body)
-    res.status(201).json(newCountry)
+    const { features } = req.body
+
+    features.forEach( async (feature) => {
+      const { properties, geometry } = feature
+
+      const newCountry = new Country({
+        iso: properties.ISO,
+        name: properties.NAME_ENGLI,
+        polygon: geometry.coordinates,
+        geojsonId: properties.ID_0,
+      })
+
+      await newCountry.save()
+    })
+
+    res.status(201).json({ 
+      message: 'Country added to the database successfully.',
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({
+      message: 'Error adding country to the database',
+      error: error.message,
+    })
   }
 }
 

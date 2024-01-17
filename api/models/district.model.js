@@ -9,6 +9,6 @@ const districtSchema = new Schema({
   region: { type: Schema.Types.ObjectId, ref: 'Region' }
 })
 
-const DistrictModel = mongoose.model('District', districtSchema)
+const DistrictModel = mongoose.model('district', districtSchema)
 
 module.exports = DistrictModel

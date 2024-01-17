@@ -9,6 +9,6 @@ const regionSchema = new Schema({
   state: { type: Schema.Types.ObjectId, ref: 'State' },
 })
 
-const RegionModel = mongoose.model('Region', regionSchema)
+const RegionModel = mongoose.model('region', regionSchema)
 
 module.exports = RegionModel

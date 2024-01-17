@@ -2,10 +2,43 @@ const Region = require('../models/region.model')
 
 const createRegion = async (req, res) => {
   try {
-    const newRegion = await Region.create(req.body)
-    res.status(201).json(newRegion)
+    const { features } = req.body
+
+    features.forEach( async (feature) => {
+      const { properties, geometry } = feature
+
+      // Search the country by ID_0
+      const country = await Country.findOne({ geojsonId: properties.ID_0 })
+      
+      if (!country) {
+        res.status(500).json({
+          message: 'Error adding region to the database, country not exist',
+          error: error.message,
+        })
+      }
+      
+      let coordinates
+      if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates;
+      if (geometry.type === 'Polygon') coordinates = [ geometry.coordinates ];
+      
+      const newRegion = new Region({
+        country: country._id,
+        name: properties.name,
+        polygon: coordinates,
+        geojsonId: feature.id,
+      })
+
+      await newRegion .save()
+    })
+    
+    res.status(201).json({ 
+      message: 'Regions added to the database successfully.',
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    res.status(500).json({
+      message: 'Error adding regions to the database',
+      error: error.message,
+    })
   }
 }
 

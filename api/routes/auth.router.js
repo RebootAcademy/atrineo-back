@@ -7,9 +7,8 @@ const {
   login
 } = require('../controllers/auth.controller')
 
-
-/* router.post('/signup/:organization?', signup) */
-router.post('/login', login)
-
+router
+  /* .post('/signup/:organization?', signup) */
+  .post('/login', login)
 
 module.exports = router

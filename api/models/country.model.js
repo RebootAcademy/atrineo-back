@@ -8,6 +8,6 @@ const countrySchema = new Schema({
   geometry: { type: [[[[Number]]]] },
 })
 
-const CountryModel = mongoose.model('Country', countrySchema)
+const CountryModel = mongoose.model('country', countrySchema)
 
 module.exports = CountryModel
