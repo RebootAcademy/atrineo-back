@@ -6,7 +6,7 @@ const { capitalizeWords, toLowercase } = require('../utils/transformWord');
 const userSchema = new mongoose.Schema({
   organization: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Organization',
+    ref: 'organization',
     default: null,
   },
   name: { 

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-const dataSchema = new mongoose.Schema({
+const dataSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -53,8 +54,9 @@ const dataSchema = new mongoose.Schema({
     type: Boolean,
   },
   locationId: {
-    type: Number,
-  }
+    type: Schema.Types.ObjectId,
+    ref: 'location',
+  },
 })
 
 const DataModel = mongoose.model('data', dataSchema)
