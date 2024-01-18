@@ -10,8 +10,8 @@ const createCountry = async (req, res) => {
       const newCountry = new Country({
         iso: properties.ISO,
         name: properties.NAME_ENGLI,
-        polygon: geometry.coordinates,
         geojsonId: properties.ID_0,
+        geometry: geometry.coordinates,
       })
 
       await newCountry.save()
