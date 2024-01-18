@@ -1,5 +1,10 @@
 const router = require('express').Router()
 
+const { 
+  isAuth,
+  isWizard
+} = require('../middlewares')
+
 const {
   createLocation,
   getLocations,
@@ -9,10 +14,10 @@ const {
 } = require('../controllers/location.controller')
 
 router
-  .post('/', createLocation)
+  .post('/', isAuth, isWizard, createLocation)
   .get('/', getLocations)
   .get('/:id', getLocationById)
-  .patch('/:id', updateLocation)
-  .delete('/:id', deleteLocation)
+  .patch('/:id', isAuth, isWizard, updateLocation)
+  .delete('/:id', isAuth, isWizard, deleteLocation)
 
 module.exports = router

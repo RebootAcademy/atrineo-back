@@ -161,7 +161,7 @@ const createOwnOrganizationUser = async (req, res) => {
     const organization = res.locals.user.organization.toString()
     const { name, email, password, role } = req.body
 
-    if (role !== 'admin' && role !== 'worker') {
+    if (role === 'wizard') {
       return res.status(400).json({
         success: false,
         message: 'Invalid role. Only "admin" or "worker" roles are allowed.'
@@ -215,7 +215,7 @@ const createOwnOrganizationUser = async (req, res) => {
 const getOwnOrganizationUsers = async (req, res) => {
   try {
     const organization = res.locals.user.organization.toString()
-    const users = await User.find({ organization: organization, role: { $ne: 'wizard' } });
+    const users = await User.find({ organization: organization });
 
 
     return res.status(200).json({
@@ -238,7 +238,6 @@ const getOwnOrganizationUser = async (req, res) => {
     const user = await User.findOne({
       _id: req.params.id,
       organization: res.locals.user.organization.toString(),
-      role: { $ne: 'wizard' }
     })
     
     if (!user) {

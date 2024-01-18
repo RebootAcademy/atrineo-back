@@ -2,9 +2,8 @@ const router = require('express').Router()
 
 const { 
   isAuth,
-  isAdmin,
   isWizard
-} = require('../middlewares/index.js');
+} = require('../middlewares')
 
 const userRouter = require('./user.router.js'); 
 const organizationRouter = require('./organization.router.js'); 
@@ -15,17 +14,17 @@ const division2Router = require('./division2.router.js')
 const division3Router = require('./division3.router.js')
 const division4Router = require('./division4.router.js')
 const authRouter = require('./auth.router.js')
-const dataRouter = require('./data.router.js'); 
+const dataRouter = require('./data.router.js')
 
 router.use('/users', isAuth, userRouter)
-router.use('/organizations', organizationRouter)
+router.use('/organizations', isAuth, isWizard, organizationRouter)
 router.use('/location', locationRouter)
-router.use('/country', countryRouter)
-router.use('/division1', division1Router)
-router.use('/division2', division2Router)
-router.use('/division3', division3Router)
-router.use('/division4', division4Router)
+router.use('/country', isAuth, isWizard, countryRouter)
+router.use('/division1', isAuth, isWizard, division1Router)
+router.use('/division2', isAuth, isWizard, division2Router)
+router.use('/division3', isAuth, isWizard, division3Router)
+router.use('/division4', isAuth, isWizard, division4Router)
 router.use('/auth', authRouter)
-router.use('/data', dataRouter)
+router.use('/data', isAuth, isWizard, dataRouter)
 
 module.exports = router
