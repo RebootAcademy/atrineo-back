@@ -1,21 +1,34 @@
 const Location = require('../models/location.model')
+const Country = require('../models/country.model')
+const Division1 = require('../models/division1.model')
+const Division2 = require('../models/division1.model')
+const Division3 = require('../models/division1.model')
 
-const createLocation = async (countryId, division1Id, division2Id, division3Id) => {
+const createLocation = async (res) => {
   try {
+
+    const { id } = req.body
+
+    const country = await Country.findOne({ geojsonId: 86 })
+    const division1 = await Division1.findOne()
+    const division2 = await Division2.findOne()
+    const division3 = await Division3.findOne()
+
     const newLocation = new Location({
-      country: countryId,
-      division1: division1Id,
-      division2: division2Id,
-      division3: division3Id
+      country: country._id,
+      division1: division1._id,
+      division2: division2._id,
+      division3: division3._id,
     });
 
     await newLocation.save();
 
-    console.log({ 
+/*     console.log({ 
       message: 'Location added to the database successfully.'
-    });
+    }) */
+
   } catch (error) {
-    console.error({
+    res.status(500).json({
       message: 'Error adding location to the database',
       error: error.message,
     })

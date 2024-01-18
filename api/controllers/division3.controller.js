@@ -11,22 +11,21 @@ const createDivision3 = async (req, res) => {
 
       // Search the division by ID_1
       const division2 = await Division2.findOne({ geojsonId: properties.ID_2 })
-        .populate({
+/*         .populate({
           path: 'country',
           match: { geojsonId: properties.ID_0 }, // Ensure the country's geojsonId matches properties.ID_0
         })
-        .exec()
+        .exec() */
 
       if (!division2) {
         res.status(500).json({
           message: 'Error adding division3 to the database, division2, division1 or country does not exist',
-          error: error.message,
         })
       }
 
       let coordinates
-      if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates;
-      if (geometry.type === 'Polygon') coordinates = [geometry.coordinates];
+      if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates
+      if (geometry.type === 'Polygon') coordinates = [geometry.coordinates]
 
       const newDivision3 = new Division3({
         division2: division2._id,
@@ -37,7 +36,7 @@ const createDivision3 = async (req, res) => {
       })
 
       await newDivision3.save()
-      await createLocation(division2.country._id, division2._id, newDivision3._id);
+      await createLocation() // Params??
 
     })
     res.status(201).json({

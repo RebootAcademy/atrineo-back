@@ -12,10 +12,7 @@ const createDivision2 = async (req, res) => {
       const division1 = await Division1.findOne({ geojsonId: properties.ID_1 })
       
       if (!division1) {
-        res.status(500).json({
-          message: 'Error adding division2 to the database, division1 or country does not exist',
-          error: error.message,
-        })
+        throw new Error('Division1 does not exist')
       }
       
       let coordinates
@@ -31,7 +28,6 @@ const createDivision2 = async (req, res) => {
       })
 
       await newDivision2.save()
-      await createLocation(division1.country._id, division1._id, newDivision2._id);
     })
     
     res.status(201).json({ 

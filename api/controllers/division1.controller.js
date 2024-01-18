@@ -6,15 +6,14 @@ const createDivision1 = async (req, res) => {
     const { features } = req.body
 
     features.forEach(async (feature) => {
-      const { properties, geometry } = feature
+      const { properties, geometry, id } = feature
 
       // Search the country by ID_1
-      const country = await Country.findOne({ geojsonId: properties.ID_1 })
+      const country = await Country.findOne({ geojsonId: properties.ID_0 })
 
       if (!country) {
         res.status(500).json({
           message: 'Error adding division1 to the database, country does not exist',
-          error: error.message,
         })
       }
 
@@ -24,19 +23,19 @@ const createDivision1 = async (req, res) => {
 
       const newDivision1 = new Division1({
         country: country._id,
-        name: properties.NAME_1,
-        type: properties.ENGTYPE_1,
-        geojsonId: properties.ID_1,
+        name: properties.name,
+        type: properties.type,
+        geojsonId: id,
         geometry: coordinates,
       })
 
       await newDivision1.save()
-      await createLocation(country._id, newDivision1._id);
     })
 
     res.status(201).json({
       message: 'Division1 added to the database successfully.',
     })
+
   } catch (error) {
     res.status(500).json({
       message: 'Error adding division1 to the database',
