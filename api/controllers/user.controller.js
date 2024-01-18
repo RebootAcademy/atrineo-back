@@ -1,8 +1,7 @@
-const { genSaltSync, hashSync } = require('bcrypt')
+const { hashPassword } = require('../utils/hashPassword')
 
 const User = require('../models/user.model')
 const Organization = require('../models/organization.model')
-const { hashPassword } = require('../utils/hashPassword')
 
 // CREATE/POST - create a new user 
 const createUser = async (req, res) => {
