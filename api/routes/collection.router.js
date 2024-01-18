@@ -14,7 +14,7 @@ const {
 } = require('../controllers/collection.controller')
 
 router
-  .post('/', isAuth, isWizard, createCollection)
+  .post('/:ownerId', isAuth, isWizard, createCollection)
   .get('/', getCollections)
   .get('/:id', getCollection)
   .patch('/:id', isAuth, isWizard, updateCollection)
