@@ -1,56 +1,92 @@
-const State = require('../models/state.model')
+const Country = require('../models/country.model')
+const Division1 = require('../models/division1.model')
 
-const createState = async (req, res) => {
+const createDivision1 = async (req, res) => {
   try {
-    const newState = await State.create(req.body)
-    res.status(201).json(newState)
+    const { features } = req.body
+
+    features.forEach(async (feature) => {
+      const { properties, geometry } = feature
+
+      // Search the country by ID_1
+      const country = await Country.findOne({ geojsonId: properties.ID_1 })
+
+      if (!country) {
+        res.status(500).json({
+          message: 'Error adding division1 to the database, country does not exist',
+          error: error.message,
+        })
+      }
+
+      let coordinates
+      if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates;
+      if (geometry.type === 'Polygon') coordinates = [geometry.coordinates];
+
+      const newDivision1 = new Division1({
+        country: country._id,
+        name: properties.NAME_1,
+        type: properties.ENGTYPE_1,
+        geojsonId: properties.ID_1,
+        geometry: coordinates,
+      })
+
+      await newDivision1.save()
+      await createLocation(country._id, newDivision1._id);
+    })
+
+    res.status(201).json({
+      message: 'Division1 added to the database successfully.',
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error adding division1 to the database',
+      error: error.message,
+    })
+  }
+}
+
+const getAllDivision1 = async (req, res) => {
+  try {
+    const divisions = await Division1.find()
+    res.status(200).json(divisions)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
 }
 
-const getStates = async (req, res) => {
+const getDivision1ById = async (req, res) => {
   try {
-    const states = await State.find()
-    res.status(200).json(states)
-  } catch (error) {
-    res.status(500).json({ error: error.message })
-  }
-}
-
-const getStateById = async (req, res) => {
-  try {
-    const state = await State.findById(req.params.id)
-    if (!state) {
-      res.status(404).json({ message: 'State not found' })
+    const division1 = await Division1.findById(req.params.id)
+    if (!division1) {
+      res.status(404).json({ message: 'Division1 not found' })
     } else {
-      res.status(200).json(state)
+      res.status(200).json(division1)
     }
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
 }
 
-const updateState = async (req, res) => {
+const updateDivision1 = async (req, res) => {
   try {
-    const updatedState = await State.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    if (!updatedState) {
-      res.status(404).json({ message: 'State not found' })
+    const updatedDivision1 = await Division1.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    if (!updatedDivision1) {
+      res.status(404).json({ message: 'Division1 not found' })
     } else {
-      res.status(200).json(updatedState)
+      res.status(200).json(updatedDivision1)
     }
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
 }
 
-const deleteState = async (req, res) => {
+const deleteDivision1 = async (req, res) => {
   try {
-    const deletedState = await State.findByIdAndDelete(req.params.id)
-    if (!deletedState) {
-      res.status(404).json({ message: 'State not found' })
+    const deletedDivision1 = await Division1.findByIdAndDelete(req.params.id)
+    if (!deletedDivision1) {
+      res.status(404).json({ message: 'Division1 not found' })
     } else {
-      res.status(200).json({ message: 'State deleted successfully' })
+      res.status(200).json({ message: 'Division1 deleted successfully' })
     }
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -58,9 +94,9 @@ const deleteState = async (req, res) => {
 }
 
 module.exports = {
-  createState,
-  getStates,
-  getStateById,
-  updateState,
-  deleteState
+  createDivision1,
+  getAllDivision1,
+  getDivision1ById,
+  updateDivision1,
+  deleteDivision1
 }

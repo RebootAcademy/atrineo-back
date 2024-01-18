@@ -1,4 +1,4 @@
-const router = require('express').Router()
+/* const router = require('express').Router()
 
 const {
   createDivision4,
@@ -15,4 +15,4 @@ router
   .patch('/:id', updateDivision4)
   .delete('/:id', deleteDivision4)
 
-module.exports = router
+module.exports = router */

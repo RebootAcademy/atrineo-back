@@ -1,97 +1,98 @@
-const District = require('../models/district.model')
-const Region = require('../models/region.model')
+const Division3 = require('../models/division3.model')
+const Division2 = require('../models/division2.model')
 const { createLocation } = require('./location.controller')
 
-const createDistrict = async (req, res) => {
+const createDivision3 = async (req, res) => {
   try {
     const { features } = req.body
 
-    features.forEach( async (feature) => {
+    features.forEach(async (feature) => {
       const { properties, geometry } = feature
 
-      // Search the district by ID_1
-      const region = await Region.findOne({ geojsonId: properties.ID_1 })
+      // Search the division by ID_1
+      const division2 = await Division2.findOne({ geojsonId: properties.ID_2 })
         .populate({
           path: 'country',
           match: { geojsonId: properties.ID_0 }, // Ensure the country's geojsonId matches properties.ID_0
         })
         .exec()
 
-      if (!region) {
+      if (!division2) {
         res.status(500).json({
-          message: 'Error adding district to the database, region or country not exist',
+          message: 'Error adding division3 to the database, division2, division1 or country does not exist',
           error: error.message,
         })
       }
-      
+
       let coordinates
       if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates;
-      if (geometry.type === 'Polygon') coordinates = [ geometry.coordinates ];
-      
-      const newDistrict = new District({
-        region: region._id,
-        name: properties.NAME_2,
-        polygon: coordinates,
-        geojsonId: properties.ID_2,
+      if (geometry.type === 'Polygon') coordinates = [geometry.coordinates];
+
+      const newDivision3 = new Division3({
+        division2: division2._id,
+        name: properties.NAME_3,
+        type: properties.ENGTYPE_3,
+        geojsonId: properties.ID_3,
+        geometry: coordinates,
       })
 
-      await newDistrict.save()
-      await createLocation(region.country._id, region._id, newDistrict._id);
+      await newDivision3.save()
+      await createLocation(division2.country._id, division2._id, newDivision3._id);
 
     })
-    res.status(201).json({ 
-      message: 'Districts added to the database successfully.',
+    res.status(201).json({
+      message: 'Division3 added to the database successfully.',
     })
   } catch (error) {
     res.status(500).json({
-      message: 'Error adding districts to the database',
+      message: 'Error adding division3 to the database',
       error: error.message,
     })
   }
 }
 
-const getDistricts = async (req, res) => {
+const getAllDivision3 = async (req, res) => {
   try {
-    const districts = await District.find()
-    res.status(200).json(districts)
+    const divisions = await Division3.find()
+    res.status(200).json(divisions)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
 }
 
-const getDistrictById = async (req, res) => {
+const getDivision3ById = async (req, res) => {
   try {
-    const district = await District.findById(req.params.id)
-    if (!district) {
-      res.status(404).json({ message: 'District not found' })
+    const division = await Division3.findById(req.params.id)
+    if (!division) {
+      res.status(404).json({ message: 'Division not found' })
     } else {
-      res.status(200).json(district)
+      res.status(200).json(division)
     }
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
 }
 
-const updateDistrict = async (req, res) => {
+const updateDivision3 = async (req, res) => {
   try {
-    const updatedDistrict = await District.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    if (!updatedDistrict) {
-      res.status(404).json({ message: 'District not found' })
+    const updatedDivision = await Division3.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    if (!updatedDivision) {
+      res.status(404).json({ message: 'Division not found' })
     } else {
-      res.status(200).json(updatedDistrict)
+      res.status(200).json(updatedDivision)
     }
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
 }
 
-const deleteDistrict = async (req, res) => {
+const deleteDivision3 = async (req, res) => {
   try {
-    const deletedDistrict = await District.findByIdAndDelete(req.params.id)
-    if (!deletedDistrict) {
-      res.status(404).json({ message: 'District not found' })
+    const deletedDivision = await Division3.findByIdAndDelete(req.params.id)
+    if (!deletedDivision) {
+      res.status(404).json({ message: 'Division not found' })
     } else {
-      res.status(200).json({ message: 'District deleted successfully' })
+      res.status(200).json({ message: 'Division deleted successfully' })
     }
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -99,9 +100,9 @@ const deleteDistrict = async (req, res) => {
 }
 
 module.exports = {
-  createDistrict,
-  getDistricts,
-  getDistrictById,
-  updateDistrict,
-  deleteDistrict
+  createDivision3,
+  getAllDivision3,
+  getDivision3ById,
+  updateDivision3,
+  deleteDivision3,
 }

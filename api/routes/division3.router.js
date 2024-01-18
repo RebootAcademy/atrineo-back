@@ -2,7 +2,7 @@ const router = require('express').Router()
 
 const {
   createDivision3,
-  getDivisions3,
+  getAllDivision3,
   getDivision3ById,
   updateDivision3,
   deleteDivision3
@@ -10,7 +10,7 @@ const {
 
 router
   .post('/', createDivision3)
-  .get('/', getDivisions3)
+  .get('/', getAllDivision3)
   .get('/:id', getDivision3ById)
   .patch('/:id', updateDivision3)
   .delete('/:id', deleteDivision3)

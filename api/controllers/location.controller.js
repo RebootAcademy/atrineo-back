@@ -1,11 +1,12 @@
 const Location = require('../models/location.model')
 
-const createLocation = async (countryId, regionId, districtId) => {
+const createLocation = async (countryId, division1Id, division2Id, division3Id) => {
   try {
     const newLocation = new Location({
       country: countryId,
-      region: regionId,
-      district: districtId,
+      division1: division1Id,
+      division2: division2Id,
+      division3: division3Id
     });
 
     await newLocation.save();
