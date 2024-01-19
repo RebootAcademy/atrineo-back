@@ -48,7 +48,7 @@ const dataSchema = new Schema({
   },
   lifeQuality: {
     type: String,
-    enum: ['Alta', 'Media', 'Baja']
+    enum: ['high', 'medium', 'low']
   },
   govFundsReceived: {
     type: Boolean,
