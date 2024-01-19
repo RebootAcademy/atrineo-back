@@ -22,6 +22,9 @@ const division2Schema = new Schema({
   },
 })
 
+// Ensure that geojsonId is unique for each upperDivision
+division2Schema.index({ geojsonId: 1, upperDivision: 1 }, { unique: true })
+
 const division2Model = mongoose.model('division2', division2Schema)
 
 module.exports = division2Model

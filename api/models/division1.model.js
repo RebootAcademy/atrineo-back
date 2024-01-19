@@ -22,6 +22,9 @@ const division1Schema = new Schema({
   },
 })
 
+// Ensure that geojsonId is unique for each country
+division1Schema.index({ geojsonId: 1, country: 1 }, { unique: true })
+
 const division1Model = mongoose.model('division1', division1Schema)
 
 module.exports = division1Model
