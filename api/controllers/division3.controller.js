@@ -1,5 +1,8 @@
 const Division3 = require('../models/division3.model')
 const Division2 = require('../models/division2.model')
+const Division1 = require('../models/division1.model')
+const Country = require('../models/country.model')
+
 const { createLocation } = require('./location.controller')
 
 const createDivision3 = async (req, res) => {
@@ -7,15 +10,11 @@ const createDivision3 = async (req, res) => {
     const { features } = req.body
 
     features.forEach(async (feature) => {
-      const { properties, geometry } = feature
+      const { properties, geometry, id } = feature
 
-      // Search the division by ID_1
+      const division1 = await Division1.findOne({ geojsonId: id })
       const division2 = await Division2.findOne({ geojsonId: properties.ID_2 })
-/*         .populate({
-          path: 'country',
-          match: { geojsonId: properties.ID_0 }, // Ensure the country's geojsonId matches properties.ID_0
-        })
-        .exec() */
+      const country = await Country.findOne({ geojsonId: properties.ID_0 })
 
       if (!division2) {
         res.status(500).json({
@@ -36,7 +35,7 @@ const createDivision3 = async (req, res) => {
       })
 
       await newDivision3.save()
-      await createLocation() // Params??
+      await createLocation(newDivision3._id, division2._id, division1._id, country._id) // Params??
 
     })
     res.status(201).json({
