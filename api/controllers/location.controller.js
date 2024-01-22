@@ -2,15 +2,13 @@ const Location = require('../models/location.model')
 
 const createLocation = async (locations) => {
   try {
-    locations.forEach(async (location) => {
       const newLocation = new Location({
-        division3: location.division3Id,
-        division2: location.division2Id,
-        division1: location.division1Id,
-        country: location.countryId,
+        division3: locations.division3Id,
+        division2: locations.division2Id,
+        division1: locations.division1Id,
+        country: locations.countryId,
       })
       await newLocation.save();
-    })
 
   } catch (error) {
     console.error('Error adding location to the database: ', error)

@@ -9,23 +9,29 @@ const createDivision3 = async (req, res) => {
   try {
     const { features } = req.body
 
-    features.forEach(async (feature) => {
-      const { properties, geometry, id } = feature
-
-      const division1 = await Division1.findOne({ geojsonId: id })
+    if (!features || !Array.isArray(features)) {
+      return res.status(400).json({ message: 'Invalid features data in the request body' })
+    }
+    
+    for (let i = 0; i < features.length; i++) {
+      const feature = features[i]
+      const { properties, geometry } = feature
+      
+      const division1 = await Division1.findOne({ geojsonId: properties.ID_1 })
       const division2 = await Division2.findOne({ geojsonId: properties.ID_2 })
       const country = await Country.findOne({ geojsonId: properties.ID_0 })
-
-      if (!division2) {
-        res.status(500).json({
+      
+      if (!division2 || !division1 || !country) {
+        /* res.status(500).json({
           message: 'Error adding division3 to the database, division2, division1 or country does not exist',
-        })
+        }) */
       }
-
+      
       let coordinates
       if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates
       if (geometry.type === 'Polygon') coordinates = [geometry.coordinates]
-
+      
+      
       const newDivision3 = new Division3({
         division2: division2._id,
         name: properties.NAME_3,
@@ -33,15 +39,21 @@ const createDivision3 = async (req, res) => {
         geojsonId: properties.ID_3,
         geometry: coordinates,
       })
-
+      
       await newDivision3.save()
-      await createLocation(newDivision3._id, division2._id, division1._id, country._id) // Params??
+      await createLocation({
+        division3Id: newDivision3._id, 
+        division2Id: division2._id, 
+        division1Id: division1._id, 
+        countryId: country._id
+      })
 
-    })
+    }
     res.status(201).json({
       message: 'Division3 added to the database successfully.',
     })
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       message: 'Error adding division3 to the database',
       error: error.message,
