@@ -53,7 +53,6 @@ const createDivision3 = async (req, res) => {
       message: 'Division3 added to the database successfully.',
     })
   } catch (error) {
-    console.log(error)
     res.status(500).json({
       message: 'Error adding division3 to the database',
       error: error.message,
