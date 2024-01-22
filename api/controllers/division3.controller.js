@@ -22,9 +22,9 @@ const createDivision3 = async (req, res) => {
       const country = await Country.findOne({ geojsonId: properties.ID_0 })
       
       if (!division2 || !division1 || !country) {
-        /* res.status(500).json({
+        res.status(500).json({
           message: 'Error adding division3 to the database, division2, division1 or country does not exist',
-        }) */
+        })
       }
       
       let coordinates
