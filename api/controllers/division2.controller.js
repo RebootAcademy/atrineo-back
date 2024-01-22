@@ -20,7 +20,7 @@ const createDivision2 = async (req, res) => {
       if (geometry.type === 'Polygon') coordinates = [ geometry.coordinates ];
       
       const newDivision2 = new Division2({
-        division1: division1._id,
+        upperDivision: division1._id,
         name: properties.NAME_2,
         type: properties.ENGTYPE_2,
         geojsonId: properties.ID_2,
