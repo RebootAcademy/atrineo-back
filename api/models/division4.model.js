@@ -4,17 +4,15 @@ const Schema = mongoose.Schema
 const division4Schema = new Schema({
   type: {
     type: String,
-    required: [true, 'Please insert division type'],
+    default: "city"
   },
   name: {
     type: String,
     required: [true, 'Please insert name'],
   },
-  geojsonId: {
+  postalCode: {
     type: Number,
-  },
-  geometry: {
-    type: [[[[ Number ]]]],
+    required: [true, 'Please insert postal code'],
   },
   upperDivision: {
     type: Schema.Types.ObjectId,
@@ -23,7 +21,7 @@ const division4Schema = new Schema({
 })
 
 // Ensure that geojsonId is unique for each upperDivision
-division4Schema.index({ geojsonId: 1, upperDivision: 1 }, { unique: true })
+division4Schema.index({ name: 1, upperDivision: 1 }, { unique: true })
 
 const division4Model = mongoose.model('division4', division4Schema)
 
