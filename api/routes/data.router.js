@@ -9,7 +9,7 @@ const {
 } = require('../controllers/data.controller')
 
 router
-  .post('/', createData)
+  .post('/:collectionId', createData)
   .get('/', getData)
   .get('/:id', getOneData)
   .patch('/:id', updateData)
