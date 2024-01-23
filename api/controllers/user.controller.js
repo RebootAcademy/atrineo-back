@@ -6,18 +6,19 @@ const Organization = require('../models/organization.model')
 // CREATE/POST - create a new user 
 const createUser = async (req, res) => {
   try {
-    const { organization } = req.params
+    const { organizationId } = req.params
     const { name, email, password, role } = req.body
 
-    const userEmail = await User.findOne({ email })
-    if (userEmail) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email already exists',
-      })
-    }
+    // DEBERÍA SER INNECESARIO, YA SE COMPRUEBA POR MONGO
+    // const userEmail = await User.findOne({ email })
+    // if (userEmail) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: 'Email already exists',
+    //   })
+    // }
 
-    const userOrganization = await Organization.findById(organization)
+    const userOrganization = await Organization.findById(organizationId)
     if (!userOrganization) {
       return res.status(404).json({
         success: false,
@@ -28,15 +29,15 @@ const createUser = async (req, res) => {
     const hashedPassword = hashPassword(password)
 
     // User is created
-    const newUser = new User({
-      organization: organization,
+    const newUser = await new User.create({  // El método create ya me introduce los datos en la BBDD, no hace falta el .save() de la línea 40
+      organizationId: organizationId,
       name: name,
       email: email,
       password: hashedPassword,
       role: role || 'worker'
     })
 
-    await newUser.save()
+    //vawait newUser.save()
 
     return res.status(201).json({
       success: true,
@@ -158,7 +159,7 @@ const deleteUser = async (req, res) => {
 // CREATE/POST - create a new organization user 
 const createOwnOrganizationUser = async (req, res) => {
   try {
-    const organization = res.locals.user.organization.toString()
+    const organizationId = res.locals.user.organizationId.toString()
     const { name, email, password, role } = req.body
 
     if (role === 'wizard') {
@@ -176,7 +177,7 @@ const createOwnOrganizationUser = async (req, res) => {
       })
     }
 
-    const userOrganization = await Organization.findById(organization)
+    const userOrganization = await Organization.findById(organizationId)
     if (!userOrganization) {
       return res.status(404).json({
         success: false,
@@ -188,9 +189,9 @@ const createOwnOrganizationUser = async (req, res) => {
 
     // User is created
     const newUser = new User({
-      organization: organization,
-      name: name,
-      email: email,
+      organizationId,
+      name,
+      email,
       password: hashedPassword,
       role: role || 'worker'
     })
@@ -214,8 +215,8 @@ const createOwnOrganizationUser = async (req, res) => {
 // READ/GET - get all organization users
 const getOwnOrganizationUsers = async (req, res) => {
   try {
-    const organization = res.locals.user.organization.toString()
-    const users = await User.find({ organization: organization });
+    const organizationId = res.locals.user.organizationId.toString()
+    const users = await User.find({ organizationId });
 
 
     return res.status(200).json({
@@ -237,7 +238,7 @@ const getOwnOrganizationUser = async (req, res) => {
   try {
     const user = await User.findOne({
       _id: req.params.id,
-      organization: res.locals.user.organization.toString(),
+      organizationId: res.locals.user.organizationId.toString(),
     })
     
     if (!user) {
@@ -267,7 +268,7 @@ const updateOwnOrganizationUser = async (req, res) => {
     const updatedUser = await User.findOneAndUpdate(
       { 
         _id: req.params.id,
-        organization: res.locals.user.organization.toString(),
+        organizationId: res.locals.user.organizationId.toString(),
         role: { $ne: 'wizard' },
       },
       req.body,
@@ -300,7 +301,7 @@ const deleteOwnOrganizationUser = async (req, res) => {
   try {
     const deletedUser = await User.findOneAndDelete({
       _id: req.params.id,
-      organization: res.locals.user.organization.toString(),
+      organizationId: res.locals.user.organizationId.toString(),
       role: { $ne: 'wizard' },
     })
 

@@ -25,7 +25,7 @@ router
   .patch('/admin/:id', isAdmin, updateOwnOrganizationUser)
   .delete('/admin/:id', isAdmin, deleteOwnOrganizationUser)
   // crud for wizard
-  .post('/:organization', isWizard, createUser)
+  .post('/:organizationId', isWizard, createUser)
   .get('/', isWizard, getUsers)
   .get('/:id', isWizard, getUser)
   .patch('/:id', isWizard, updateUser)

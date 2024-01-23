@@ -4,7 +4,7 @@ const { checkEmail } = require('../utils/validations');
 const { capitalizeWords, toLowercase } = require('../utils/transformWord');
 
 const userSchema = new mongoose.Schema({
-  organization: {
+  organizationId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'organization',
     default: null,
