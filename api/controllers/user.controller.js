@@ -20,7 +20,7 @@ const createUser = async (req, res) => {
     const hashedPassword = hashPassword(password)
 
     // User is created
-    const newUser = await new User.create({
+    const newUser = await User.create({
       organizationId: organizationId,
       name: name,
       email: email,
@@ -64,7 +64,7 @@ const getUsers = async (req, res) => {
 // READ/GET - get ONE user by id
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id)
+    const user = await User.findById(req.params.id).populate('organizationId')
     
     if (!user) {
       return res.status(404).json({
@@ -177,15 +177,13 @@ const createOwnOrganizationUser = async (req, res) => {
     const hashedPassword = hashPassword(password)
 
     // User is created
-    const newUser = new User({
+    const newUser = await User.create({
       organizationId,
       name,
       email,
       password: hashedPassword,
       role: role || 'worker'
     })
-
-    await newUser.save()
 
     return res.status(201).json({
       success: true,

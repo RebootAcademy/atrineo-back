@@ -18,16 +18,16 @@ const dataRouter = require('./data.router.js')
 const collectionRouter = require('./collection.router.js')
 
 router
-  .use('/users', isAuth, userRouter)
-  .use('/organizations', isAuth, isWizard, organizationRouter)
-  .use('/location', /* isAuth, isWizard, */ locationRouter)
+  .use('/user', isAuth, userRouter)
+  .use('/organization', isAuth, isWizard, organizationRouter)
+  .use('/location', isAuth, isWizard, locationRouter)
   .use('/country', countryRouter)
   .use('/division1', division1Router)
   .use('/division2', division2Router)
   .use('/division3', division3Router)
   .use('/division4', division4Router)
   .use('/auth', authRouter)
-  .use('/data', /* isAuth, isWizard, */ dataRouter)
+  .use('/data', isAuth, isWizard, dataRouter)
   .use('/collection', collectionRouter)
 
 module.exports = router

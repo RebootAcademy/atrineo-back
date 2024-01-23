@@ -13,7 +13,7 @@ const dataSchema = new Schema({
   longitude: {
     type: Number,
   },
-  districtId: {
+  districtId: {   // ZIP-CODE
     type: Number,
   },
   districtName: {

@@ -3,7 +3,7 @@ const Organization = require('../models/organization.model')
 // CREATE/POST - create a new organization
 const createOrganization = async (req, res) => {
   try {
-    const newOrganization = await new Organization.create(req.body)
+    const newOrganization = await Organization.create(req.body)
 
     return res.status(201).json({
       success: true,
@@ -44,9 +44,10 @@ const getOrganization = async (req, res) => {
     const organization = await Organization.findById(req.params.id)
     
     if (!organization) {
-      return res.status(404).json(
-        { message: 'Organization not found' }
-      )
+      return res.status(404).json({ 
+        success: false,
+        message: 'Organization not found' 
+      })
     }
 
     return res.status(200).json({

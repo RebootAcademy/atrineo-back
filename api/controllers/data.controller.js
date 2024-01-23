@@ -6,13 +6,12 @@ const createData = async (req, res) => {
   try {
     const newDataArray = []
 
-    req.body.forEach(element => {
+    req.body.forEach(async element => {
       element.geometry = transformData(element.geometry)
-      const newData = new Data({
+      const newData = await Data.create({
         ...element,
         locationId: null
       })
-      newData.save()
       newDataArray.push(newData)
     })
 

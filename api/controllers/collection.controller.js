@@ -16,7 +16,7 @@ const createCollection = async (req, res) => {
     }
 
     // Collection is created
-    const newCollection = await new Collection.create({
+    const newCollection = await Collection.create({
       public: public || false,
       ownerId,
       creatorId: res.locals.user.organizationId.toString(),
