@@ -1,3 +1,4 @@
+const Collection = require('../models/collection.model')
 const Data = require('../models/data.model')
 const Division4 = require('../models/division4.model')
 const Location = require('../models/location.model')
@@ -8,7 +9,8 @@ const createData = async (req, res) => {
   try {
     const newDataArray = []
 
-    console.log
+    const { collectionId } = req.params
+    const collection = await Collection.findById(collectionId)
 
     for (const element of req.body) {
       element.geometry = transformData(element.geometry)
@@ -21,6 +23,7 @@ const createData = async (req, res) => {
       })
 
       newData.save()
+
       newDataArray.push({
         _id: newData._id,
         name: newData.name,
@@ -30,6 +33,9 @@ const createData = async (req, res) => {
         districtName: newData.districtName,
         locationId: newData.locationId,
       })
+
+      collection.data.push(newData._id)
+      await collection.save()
     }
 
     return res.status(201).json({
