@@ -33,7 +33,7 @@ const createDivision3 = async (req, res) => {
       
       
       const newDivision3 = new Division3({
-        division2: division2._id,
+        upperDivision: division2._id,
         name: properties.NAME_3,
         type: properties.ENGTYPE_3,
         geojsonId: properties.ID_3,
