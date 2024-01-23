@@ -7,8 +7,8 @@ const createCollection = async (req, res) => {
     const { ownerId } = req.params
     const { data, public } = req.body
 
-    const ownerOrganizaion = await Organization.findById(ownerId)
-    if (!ownerOrganizaion) {
+    const ownerOrganization = await Organization.findById(ownerId)
+    if (!ownerOrganization) {
       return res.status(404).json({
         success: false,
         message: 'Owner Organization not found',
@@ -16,13 +16,12 @@ const createCollection = async (req, res) => {
     }
 
     // Collection is created
-    const newCollection = new Collection({
+    const newCollection = await new Collection.create({
       public: public || false,
-      ownerId: ownerId,
-      creatorId: res.locals.user.organization.toString(),
+      ownerId,
+      creatorId: res.locals.user.organizationId.toString(),
       data: data || []
     })
-    await newCollection.save()
 
     return res.status(201).json({
       success: true,
@@ -102,7 +101,7 @@ const updateCollection = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Collection updated successfully',
-      Collection: updatedCollection
+      collection: updatedCollection
     })
   } catch (error) {
     return res.status(500).json({
@@ -128,7 +127,7 @@ const deleteCollection = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Collection deleted successfully',
-      Collection: deletedCollection
+      collection: deletedCollection
     })
   } catch (error) {
     return res.status(500).json({
