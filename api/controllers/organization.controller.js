@@ -5,16 +5,16 @@ const createOrganization = async (req, res) => {
   try {
     const { email } = req.body
 
-    const organizaionEmail = await Organization.findOne({ email })
-    if (organizaionEmail) {
-      return res.status(400).json(
-        { message: 'Email already exists' }
-      )
-    }
+    // const organizaionEmail = await Organization.findOne({ email })
+    // if (organizaionEmail) {
+    //   return res.status(400).json(
+    //     { message: 'Email already exists' }
+    //   )
+    // }
 
     // organization is created
-    const newOrganization = new Organization(req.body)
-    await newOrganization.save()
+    const newOrganization = await new Organization.create(req.body)
+    //await newOrganization.save()
 
     return res.status(201).json({
       message: 'Organization created successfully',
