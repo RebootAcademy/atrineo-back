@@ -9,15 +9,6 @@ const createUser = async (req, res) => {
     const { organizationId } = req.params
     const { name, email, password, role } = req.body
 
-    // DEBERÍA SER INNECESARIO, YA SE COMPRUEBA POR MONGO
-    // const userEmail = await User.findOne({ email })
-    // if (userEmail) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: 'Email already exists',
-    //   })
-    // }
-
     const userOrganization = await Organization.findById(organizationId)
     if (!userOrganization) {
       return res.status(404).json({
@@ -29,15 +20,13 @@ const createUser = async (req, res) => {
     const hashedPassword = hashPassword(password)
 
     // User is created
-    const newUser = await new User.create({  // El método create ya me introduce los datos en la BBDD, no hace falta el .save() de la línea 40
+    const newUser = await new User.create({
       organizationId: organizationId,
       name: name,
       email: email,
       password: hashedPassword,
       role: role || 'worker'
     })
-
-    //vawait newUser.save()
 
     return res.status(201).json({
       success: true,

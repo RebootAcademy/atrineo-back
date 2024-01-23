@@ -1,10 +1,6 @@
 const router = require('express').Router()
 
 const { 
-  isWizard
-} = require('../middlewares')
-
-const { 
   createOrganization,
   getOrganizations,
   getOrganization,
@@ -13,10 +9,10 @@ const {
 } = require('../controllers/organization.controller')
 
 router
-  .post('/', isWizard, createOrganization)
-  .get('/', isWizard, getOrganizations)
-  .get('/:id', isWizard, getOrganization)
-  .patch('/:id', isWizard, updateOrganization)
-  .delete('/:id', isWizard, deleteOrganization)
+  .post('/', createOrganization)
+  .get('/', getOrganizations)
+  .get('/:id', getOrganization)
+  .patch('/:id', updateOrganization)
+  .delete('/:id', deleteOrganization)
 
 module.exports = router
