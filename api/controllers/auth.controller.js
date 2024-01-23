@@ -23,7 +23,7 @@ const login = async (req, res) => {
     } */
 
     // Create a JSON Web Token
-    const token = sign({ email: user.email }, process.env.JWT_SECRET, /* options */)
+    const token = sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' })
 
     return res.status(200).json({
       success: true,
