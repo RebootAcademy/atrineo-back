@@ -3,6 +3,7 @@ const Location = require('../models/location.model')
 const createLocation = async (locations) => {
   try {
       const newLocation = new Location({
+        division4: locations.division4Id,
         division3: locations.division3Id,
         division2: locations.division2Id,
         division1: locations.division1Id,
