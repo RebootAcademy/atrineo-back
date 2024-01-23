@@ -1,9 +1,5 @@
 const Division3 = require('../models/division3.model')
 const Division2 = require('../models/division2.model')
-const Division1 = require('../models/division1.model')
-const Country = require('../models/country.model')
-
-const { createLocation } = require('./location.controller')
 
 const createDivision3 = async (req, res) => {
   try {
@@ -17,20 +13,17 @@ const createDivision3 = async (req, res) => {
       const feature = features[i]
       const { properties, geometry } = feature
       
-      const division1 = await Division1.findOne({ geojsonId: properties.ID_1 })
       const division2 = await Division2.findOne({ geojsonId: properties.ID_2 })
-      const country = await Country.findOne({ geojsonId: properties.ID_0 })
       
-      if (!division2 || !division1 || !country) {
+      if (!division2) {
         res.status(500).json({
-          message: 'Error adding division3 to the database, division2, division1 or country does not exist',
+          message: 'Error adding division3 to the database, division2 does not exist',
         })
       }
       
       let coordinates
       if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates
       if (geometry.type === 'Polygon') coordinates = [geometry.coordinates]
-      
       
       const newDivision3 = new Division3({
         upperDivision: division2._id,
@@ -41,13 +34,6 @@ const createDivision3 = async (req, res) => {
       })
       
       await newDivision3.save()
-      await createLocation({
-        division3Id: newDivision3._id, 
-        division2Id: division2._id, 
-        division1Id: division1._id, 
-        countryId: country._id
-      })
-
     }
     res.status(201).json({
       message: 'Division3 added to the database successfully.',
