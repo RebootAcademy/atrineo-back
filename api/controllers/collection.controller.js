@@ -41,7 +41,21 @@ const createCollection = async (req, res) => {
 // READ/GET - get all collections
 const getCollections = async (req, res) => {
   try {
-    const collections = await Collection.find()
+    const collections = await Collection
+    .find()
+    .populate({
+      path: 'data',
+      populate: {
+        path: 'locationId',
+        populate: [
+          { path: 'country', select: '-geometry' },
+          { path: 'division1', select: '-geometry -country' },
+          { path: 'division2', select: '-geometry -upperDivision' },
+          { path: 'division3', select: '-geometry -upperDivision' },
+          { path: 'division4', select: '-referencedId -referencedModel' },
+        ],
+      },
+    });
 
     return res.status(200).json({
       success: true,
@@ -60,7 +74,21 @@ const getCollections = async (req, res) => {
 // READ/GET - get ONE Collection by id
 const getCollection = async (req, res) => {
   try {
-    const collection = await Collection.findById(req.params.id)
+    const collection = await Collection
+    .findById(req.params.id)
+    .populate({
+      path: 'data',
+      populate: {
+        path: 'locationId',
+        populate: [
+          { path: 'country', select: '-geometry' },
+          { path: 'division1', select: '-geometry -country' },
+          { path: 'division2', select: '-geometry -upperDivision' },
+          { path: 'division3', select: '-geometry -upperDivision' },
+          { path: 'division4', select: '-referencedId -referencedModel' },
+        ],
+      },
+    });
     
     if (!collection) {
       return res.status(404).json({

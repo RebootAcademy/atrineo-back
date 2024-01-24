@@ -21,6 +21,7 @@ const createData = async (req, res) => {
       } else {
         division4 = await Division4.findOne({ name: element.districtName })
       }
+
       const location = await Location.findOne({ division4 });
 
       const newData = new Data({
