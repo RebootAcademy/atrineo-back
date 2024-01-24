@@ -19,14 +19,14 @@ const collectionRouter = require('./collection.router.js')
 
 router.use('/users', isAuth, userRouter)
 router.use('/organizations', isAuth, isWizard, organizationRouter)
-router.use('/location', /* isAuth, isWizard, */ locationRouter)
+router.use('/location', isAuth, isWizard, locationRouter)
 router.use('/country', countryRouter)
 router.use('/division1', division1Router)
 router.use('/division2', division2Router)
 router.use('/division3', division3Router)
 router.use('/division4', division4Router)
 router.use('/auth', authRouter)
-router.use('/data', /* isAuth, isWizard, */ dataRouter)
+router.use('/data', isAuth, isWizard, dataRouter)
 router.use('/collection', collectionRouter)
 
 module.exports = router

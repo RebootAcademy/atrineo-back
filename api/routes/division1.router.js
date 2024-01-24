@@ -1,5 +1,10 @@
 const router = require('express').Router()
 
+const { 
+  isAuth,
+  isWizard
+} = require('../middlewares')
+
 const {
   createDivision1,
   getAllDivision1,
@@ -9,10 +14,10 @@ const {
 } = require('../controllers/division1.controller')
 
 router
-  .post('/', createDivision1)
+  .post('/', isAuth, isWizard, createDivision1)
   .get('/', getAllDivision1)
   .get('/:id', getDivision1ById)
-  .patch('/:id', updateDivision1)
-  .delete('/:id', deleteDivision1)
+  .patch('/:id', isAuth, isWizard, updateDivision1)
+  .delete('/:id', isAuth, isWizard, deleteDivision1)
 
 module.exports = router

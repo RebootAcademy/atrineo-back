@@ -1,5 +1,10 @@
 const router = require('express').Router()
 
+const { 
+  isAuth,
+  isWizard
+} = require('../middlewares')
+
 const {
   createCountry,
   getCountries,
@@ -9,10 +14,10 @@ const {
 } = require('../controllers/country.controller')
 
 router
-  .post('/', createCountry)
+  .post('/', isAuth, isWizard, createCountry)
   .get('/', getCountries)
   .get('/:id', getCountryById)
-  .patch('/:id', updateCountry)
-  .delete('/:id', deleteCountry)
+  .patch('/:id', isAuth, isWizard, updateCountry)
+  .delete('/:id', isAuth, isWizard, deleteCountry)
 
 module.exports = router
