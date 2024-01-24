@@ -19,7 +19,7 @@ const createData = async (req, res) => {
       if (element.districtId) {
         division4 = await Division4.findOne({ postalCode: { $in: element.districtId } })
       } else {
-        division4 = await Division4.findOne({ cityName: element.cityName })
+        division4 = await Division4.findOne({ name: element.districtName })
       }
       const location = await Location.findOne({ division4 });
 
