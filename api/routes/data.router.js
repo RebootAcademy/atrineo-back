@@ -2,16 +2,16 @@ const router = require('express').Router()
 
 const {
   createData,
-  getData,
-  getOneData,
+  getAllData,
+  getDataById,
   updateData,
   deleteData
 } = require('../controllers/data.controller')
 
 router
   .post('/:collectionId', createData)
-  .get('/', getData)
-  .get('/:id', getOneData)
+  .get('/', getAllData)
+  .get('/:id', getDataById)
   .patch('/:id', updateData)
   .delete('/:id', deleteData)
 
