@@ -8,11 +8,11 @@ const { cleanDistrictName } = require('../utils/cleanDistrictName')
 const createDivision4 = async (req, res) => {
   try {
     const cities = req.body
-
+    let newDivision4
     if (!cities || !Array.isArray(cities)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid data in the request body',
+        message: 'Invalid data in the request body' 
       })
     }
 
@@ -52,15 +52,12 @@ const createDivision4 = async (req, res) => {
           referencedModel = "division1"
         }
     
-        const newDivision = new Division4 ({
+        const newDivision4 = await Division4.create ({
           name: cityName,
           postalCode,
           referencedId,
           referencedModel,
         })
-
-        await newDivision.save();
-
 
         await createLocation({
           division4Id: newDivision._id,
@@ -80,16 +77,15 @@ const createDivision4 = async (req, res) => {
       }
     }
 
-
     return res.status(201).json({
       success: true,
-      message: 'Division4 added to the database successfully.',
+      message: 'Division4 created successfully',
+      result: newDivision4
     })
   } catch (error) {
-    console.log(error)
     return res.status(500).json({
       success: false,
-      message: 'Error adding division4 to the database',
+      message: 'Error creating division4',
       error: error.message,
     })
   }
@@ -98,48 +94,93 @@ const createDivision4 = async (req, res) => {
 const getAllDivision4 = async (req, res) => {
   try {
     const divisions = await Division4.find()
-    res.status(200).json(divisions)
+    return res.status(200).json({
+      success: true,
+      message: 'All division4 fetched successfully',
+      result: divisions
+    })  
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching all division4',
+      description: error.message
+    })  
   }
 }
 
 const getDivision4ById = async (req, res) => {
   try {
-    const division = await Division4.findById(req.params.id)
-    if (!division) {
-      res.status(404).json({ message: 'Division not found' })
-    } else {
-      res.status(200).json(division)
+    const division4 = await Division4.findById(req.params.id)
+    if (!division4) {
+      return res.status(404).json({
+          success: false,
+          message: 'Division4 not found'
+      })
     }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Division4 fetched successfully',
+      result: division4
+    })  
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching division4',
+      description: error.message
+    })  
   }
 }
 
 const updateDivision4 = async (req, res) => {
   try {
-    const updatedDivision = await Division4.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    if (!updatedDivision) {
-      res.status(404).json({ message: 'Division not found' })
-    } else {
-      res.status(200).json(updatedDivision)
+    const updatedDivision4 = await Division4.findByIdAndUpdate(
+      req.params.id, 
+      req.body, 
+      { new: true }
+    )
+    if (!updatedDivision4) {
+      return res.status(404).json({
+          success: false,
+          message: 'Division4 not found'
+      })
     }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Division4 updated successfully',
+      result: updatedDivision4
+    })  
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error updating division4',
+      description: error.message
+    }) 
   }
 }
 
 const deleteDivision4 = async (req, res) => {
   try {
-    const deletedDivision = await Division4.findByIdAndDelete(req.params.id)
-    if (!deletedDivision) {
-      res.status(404).json({ message: 'Division not found' })
-    } else {
-      res.status(200).json({ message: 'Division deleted successfully' })
+    const deletedDivision4 = await Division4.findByIdAndDelete(req.params.id)
+    if (!deletedDivision4) {
+      return res.status(404).json({
+          success: false,
+          message: 'Division4 not found'
+      })
     }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Division4 deleted successfully',
+      result: deletedDivision4
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error deleting division4',
+      description: error.message
+    })  
   }
 }
 
