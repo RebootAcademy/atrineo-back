@@ -54,13 +54,12 @@ const getCountryById = async (req, res) => {
         success: false,
         message: 'Country not found'
       })
-    } else {
-      return res.status(201).json({
-        success: true,
-        message: 'Fetching country OK',
-        result: country
-      })
     }
+    return res.status(201).json({
+      success: true,
+      message: 'Fetching country OK',
+      result: country
+    })
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -82,13 +81,12 @@ const updateCountry = async (req, res) => {
         success: false,
         message: 'Country not found'
       })
-    } else {
-      return res.status(201).json({
-        success: true,
-        message: 'Updating country OK',
-        result: updatedCountry
-      })
     }
+    return res.status(201).json({
+      success: true,
+      message: 'Updating country OK',
+      result: updatedCountry
+    })
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -106,13 +104,12 @@ const deleteCountry = async (req, res) => {
         success: false,
         message: 'Country not found'
       })
-    } else {
-      return res.status(201).json({
-        success: true,
-        message: 'Deleting country OK',
-        result: deletedCountry
-      })
     }
+    return res.status(201).json({
+      success: true,
+      message: 'Deleting country OK',
+      result: deletedCountry
+    })
   } catch (error) {
     return res.status(500).json({
       success: false,

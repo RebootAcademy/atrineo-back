@@ -120,7 +120,7 @@ const deleteDivision1 = async (req, res) => {
   try {
     const deletedDivision1 = await Division1.findByIdAndDelete(req.params.id)
 
-    if (!updatedDivision1) {
+    if (!deletedDivision1) {
       return res.status(404).json({
         success: false,
         message: 'Division1 not found'

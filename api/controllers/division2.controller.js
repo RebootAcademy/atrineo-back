@@ -4,6 +4,7 @@ const Division1 = require('../models/division1.model')
 const createDivision2 = async (req, res) => {
   try {
     const { features } = req.body
+    let newDivision2
 
     features.forEach( async (feature) => {
       const { properties, geometry } = feature
@@ -12,31 +13,35 @@ const createDivision2 = async (req, res) => {
       const division1 = await Division1.findOne({ geojsonId: properties.ID_1 })
       
       if (!division1) {
-        throw new Error('Division1 does not exist')
+        return res.status(404).json({
+          success: false,
+          message: 'Divison1 not found'
+        })
       }
       
       let coordinates
       if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates;
       if (geometry.type === 'Polygon') coordinates = [ geometry.coordinates ];
       
-      const newDivision2 = new Division2({
+      newDivision2 = await Division2.create({
         upperDivision: division1._id,
         name: properties.NAME_2,
         type: properties.ENGTYPE_2,
         geojsonId: properties.ID_2,
         geometry: coordinates,
       })
-
-      await newDivision2.save()
     })
     
-    res.status(201).json({ 
-      message: 'Division2 added to the database successfully.',
+    return res.status(201).json({
+      success: true,
+      message: 'Division2 created successfully',
+      result: newDivision2
     })
   } catch (error) {
-    res.status(500).json({
-      message: 'Error adding division2 to the database',
-      error: error.message,
+    return res.status(500).json({
+      success: false,
+      message: 'Error creating division2',
+      description: error.message
     })
   }
 }
@@ -44,9 +49,17 @@ const createDivision2 = async (req, res) => {
 const getAllDivision2 = async (req, res) => {
   try {
     const divisions = await Division2.find()
-    res.status(200).json(divisions)
+    return res.status(200).json({
+      success: true,
+      message: 'All division2 fetched successfully',
+      result: divisions
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching all division2',
+      description: error.message
+    })
   }
 }
 
@@ -54,10 +67,16 @@ const getDivision2ById = async (req, res) => {
   try {
     const division2 = await Division2.findById(req.params.id)
     if (!division2) {
-      res.status(404).json({ message: 'Division2 not found' })
-    } else {
-      res.status(200).json(division2)
+      return res.status(404).json({
+          success: false,
+          message: 'Division2 not found'
+      })
     }
+    return res.status(200).json({
+      success: true,
+      message: 'Division2 fetched successfully',
+      result: division2
+    })
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
@@ -67,12 +86,22 @@ const updateDivision2 = async (req, res) => {
   try {
     const updatedDivision2 = await Division2.findByIdAndUpdate(req.params.id, req.body, { new: true })
     if (!updatedDivision2) {
-      res.status(404).json({ message: 'Division2 not found' })
-    } else {
-      res.status(200).json(updatedDivision2)
+      return res.status(404).json({
+          success: false,
+          message: 'Division2 not found'
+      })
     }
+    return res.status(200).json({
+      success: true,
+      message: 'Division2 updated successfully',
+      result: updatedDivision2
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error updating division2',
+      description: error.message
+    })
   }
 }
 
@@ -80,12 +109,22 @@ const deleteDivision2 = async (req, res) => {
   try {
     const deletedDivision2 = await Division2.findByIdAndDelete(req.params.id)
     if (!deletedDivision2) {
-      res.status(404).json({ message: 'Division2 not found' })
-    } else {
-      res.status(200).json({ message: 'Division2 deleted successfully' })
+      return res.status(404).json({
+          success: false,
+          message: 'Division2 not found'
+      })
     }
+    return res.status(200).json({
+      success: true,
+      message: 'Division2 deleted successfully',
+      result: deletedDivision2
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error deleting division2',
+      description: error.message
+    })  
   }
 }
 
