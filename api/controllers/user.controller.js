@@ -31,7 +31,7 @@ const createUser = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'User created successfully',
-      user: newUser
+      result: newUser
     })
   } catch (error) {
     return res.status(500).json({
@@ -50,7 +50,7 @@ const getUsers = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Fetching users OK',
-      users
+      result: users
     })
   } catch (error) {
     return res.status(500).json({
@@ -76,7 +76,7 @@ const getUser = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Fetching user OK',
-      user
+      result: user
     })
   } catch (error) {
     return res.status(500).json({
@@ -106,7 +106,7 @@ const updateUser = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'User updated successfully',
-      user: updatedUser
+      result: updatedUser
     })
   } catch (error) {
     return res.status(500).json({
@@ -132,7 +132,7 @@ const deleteUser = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'User deleted successfully',
-      user: deletedUser
+      result: deletedUser
     })
   } catch (error) {
     return res.status(500).json({
@@ -188,7 +188,7 @@ const createOwnOrganizationUser = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'User created successfully',
-      user: newUser
+      result: newUser
     })
   } catch (error) {
     return res.status(500).json({
@@ -209,7 +209,7 @@ const getOwnOrganizationUsers = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Fetching users OK',
-      users
+      result: users
     })
   } catch (error) {
     return res.status(500).json({
@@ -238,7 +238,7 @@ const getOwnOrganizationUser = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Fetching user OK',
-      user
+      result: user
     })
   } catch (error) {
     return res.status(500).json({
@@ -272,7 +272,7 @@ const updateOwnOrganizationUser = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'User updated successfully',
-      user: updatedUser
+      result: updatedUser
     })
   } catch (error) {
     return res.status(500).json({
@@ -302,7 +302,7 @@ const deleteOwnOrganizationUser = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'User deleted successfully',
-      user: deletedUser
+      result: deletedUser
     })
   } catch (error) {
     return res.status(500).json({

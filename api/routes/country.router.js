@@ -2,7 +2,7 @@ const router = require('express').Router()
 
 const {
   createCountry,
-  getCountries,
+  getAllCountries,
   getCountryById,
   updateCountry,
   deleteCountry
@@ -10,7 +10,7 @@ const {
 
 router
   .post('/', createCountry)
-  .get('/', getCountries)
+  .get('/', getAllCountries)
   .get('/:id', getCountryById)
   .patch('/:id', updateCountry)
   .delete('/:id', deleteCountry)

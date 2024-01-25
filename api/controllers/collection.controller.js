@@ -26,7 +26,7 @@ const createCollection = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'Collection created successfully',
-      Collection: newCollection,
+      collection: newCollection,
     })
   } catch (error) {
     return res.status(500).json({
