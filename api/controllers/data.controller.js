@@ -14,7 +14,14 @@ const createData = async (req, res) => {
 
     for (const element of req.body) {
       element.geometry = transformData(element.geometry)
-      const division4 = await Division4.findOne({ postalCode: { $in: element.districtId } });
+
+      let division4
+      if (element.districtId) {
+        division4 = await Division4.findOne({ postalCode: { $in: element.districtId } })
+      } else {
+        division4 = await Division4.findOne({ name: element.districtName })
+      }
+
       const location = await Location.findOne({ division4 });
 
       const newData = await Data.create({
