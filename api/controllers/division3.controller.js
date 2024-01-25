@@ -4,9 +4,13 @@ const Division2 = require('../models/division2.model')
 const createDivision3 = async (req, res) => {
   try {
     const { features } = req.body
+    let newDivision3
 
     if (!features || !Array.isArray(features)) {
-      return res.status(400).json({ message: 'Invalid features data in the request body' })
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid features data in the request body' 
+      })
     }
     
     for (let i = 0; i < features.length; i++) {
@@ -16,8 +20,9 @@ const createDivision3 = async (req, res) => {
       const division2 = await Division2.findOne({ geojsonId: properties.ID_2 })
       
       if (!division2) {
-        res.status(500).json({
-          message: 'Error adding division3 to the database, division2 does not exist',
+        return res.status(404).json({
+          success: false,
+          message: 'Division2 not found'
         })
       }
       
@@ -25,21 +30,22 @@ const createDivision3 = async (req, res) => {
       if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates
       if (geometry.type === 'Polygon') coordinates = [geometry.coordinates]
       
-      const newDivision3 = new Division3({
+      newDivision3 = await Division3.create({
         upperDivision: division2._id,
         name: properties.NAME_3,
         type: properties.ENGTYPE_3,
         geojsonId: properties.ID_3,
         geometry: coordinates,
       })
-      
-      await newDivision3.save()
     }
-    res.status(201).json({
-      message: 'Division3 added to the database successfully.',
+    return res.status(201).json({
+      success: true,
+      message: 'Division3 created successfully',
+      result: newDivision3
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
+      success: false,
       message: 'Error adding division3 to the database',
       error: error.message,
     })
@@ -49,48 +55,92 @@ const createDivision3 = async (req, res) => {
 const getAllDivision3 = async (req, res) => {
   try {
     const divisions = await Division3.find()
-    res.status(200).json(divisions)
+    return res.status(200).json({
+      success: true,
+      message: 'All division3 fetched successfully',
+      result: divisions
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching all division3',
+      description: error.message
+    })  
   }
 }
 
 const getDivision3ById = async (req, res) => {
   try {
-    const division = await Division3.findById(req.params.id)
-    if (!division) {
-      res.status(404).json({ message: 'Division not found' })
-    } else {
-      res.status(200).json(division)
+    const division3 = await Division3.findById(req.params.id)
+    if (!division3) {
+      return res.status(404).json({
+          success: false,
+          message: 'Division3 not found'
+      })
     }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Division3 fetched successfully',
+      result: division3
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching division3',
+      description: error.message
+    })  
   }
 }
 
 const updateDivision3 = async (req, res) => {
   try {
-    const updatedDivision = await Division3.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    if (!updatedDivision) {
-      res.status(404).json({ message: 'Division not found' })
-    } else {
-      res.status(200).json(updatedDivision)
+    const updatedDivision3 = await Division3.findByIdAndUpdate(
+      req.params.id, 
+      req.body, 
+      { new: true }
+    )
+    if (!updatedDivision3) {
+      return res.status(404).json({
+        success: false,
+        message: 'Division3 not found'
+      })
     }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Division3 updated successfully',
+      result: updatedDivision3
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error updating division3',
+      description: error.message
+    })  
   }
 }
 
 const deleteDivision3 = async (req, res) => {
   try {
-    const deletedDivision = await Division3.findByIdAndDelete(req.params.id)
-    if (!deletedDivision) {
-      res.status(404).json({ message: 'Division not found' })
-    } else {
-      res.status(200).json({ message: 'Division deleted successfully' })
+    const deletedDivision3 = await Division3.findByIdAndDelete(req.params.id)
+    if (!deletedDivision3) {
+      return res.status(404).json({
+        success: false,
+        message: 'Division3 not found'
+      })
     }
+    return res.status(200).json({
+      success: true,
+      message: 'Division3 deleted successfully',
+      result: deletedDivision3
+    })
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({
+      success: false,
+      message: 'Error deleting division3',
+      description: error.message
+    })   
   }
 }
 

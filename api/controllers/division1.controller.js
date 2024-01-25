@@ -5,6 +5,7 @@ const createDivision1 = async (req, res) => {
   try {
     const { features } = req.body
     let newDivision1
+    
     features.forEach(async (feature) => {
       const { properties, geometry, id } = feature
 
