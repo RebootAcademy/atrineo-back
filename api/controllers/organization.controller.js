@@ -20,7 +20,7 @@ const createOrganization = async (req, res) => {
 }
 
 // READ/GET - get all organizations
-const getOrganizations = async (req, res) => {
+const getAllOrganizations = async (req, res) => {
   try {
     const organizations = await Organization.find()
 
@@ -39,7 +39,7 @@ const getOrganizations = async (req, res) => {
 }
 
 // READ/GET - get ONE organization by id
-const getOrganization = async (req, res) => {
+const getOrganizationById = async (req, res) => {
   try {
     const organization = await Organization.findById(req.params.id)
     
@@ -123,8 +123,8 @@ const deleteOrganization = async (req, res) => {
 
 module.exports = {
   createOrganization,
-  getOrganizations,
-  getOrganization,
+  getAllOrganizations,
+  getOrganizationById,
   updateOrganization,
   deleteOrganization
 }

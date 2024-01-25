@@ -2,16 +2,16 @@ const router = require('express').Router()
 
 const { 
   createOrganization,
-  getOrganizations,
-  getOrganization,
+  getAllOrganizations,
+  getOrganizationById,
   updateOrganization,
   deleteOrganization
 } = require('../controllers/organization.controller')
 
 router
   .post('/', createOrganization)
-  .get('/', getOrganizations)
-  .get('/:id', getOrganization)
+  .get('/', getAllOrganizations)
+  .get('/:id', getOrganizationById)
   .patch('/:id', updateOrganization)
   .delete('/:id', deleteOrganization)
 

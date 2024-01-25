@@ -24,7 +24,7 @@ const createLocation = async (locations) => {
   }
 }
 
-const getLocations = async (req, res) => {
+const getAllLocations = async (req, res) => {
   try {
     const locations = await Location.find()
 
@@ -121,7 +121,7 @@ const deleteLocation = async (req, res) => {
 
 module.exports = {
   createLocation,
-  getLocations,
+  getAllLocations,
   getLocationById,
   updateLocation,
   deleteLocation

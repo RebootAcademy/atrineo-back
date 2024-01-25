@@ -7,7 +7,7 @@ const {
 
 const {
   createLocation,
-  getLocations,
+  getAllLocations,
   getLocationById,
   updateLocation,
   deleteLocation
@@ -15,7 +15,7 @@ const {
 
 router
   .post('/', isAuth, isWizard, createLocation)
-  .get('/', getLocations)
+  .get('/', getAllLocations)
   .get('/:id', getLocationById)
   .patch('/:id', isAuth, isWizard, updateLocation)
   .delete('/:id', isAuth, isWizard, deleteLocation)
