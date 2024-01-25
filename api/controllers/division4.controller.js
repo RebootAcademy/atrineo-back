@@ -2,13 +2,14 @@ const Division4 = require('../models/division4.model')
 const Division3 = require('../models/division3.model')
 const Division1 = require('../models/division1.model')
 
-const { createLocation } = require('./location.controller')
+const { createLocationInDivision4 } = require('./location.controller')
 const { cleanDistrictName } = require('../utils/cleanDistrictName')
 
 const createDivision4 = async (req, res) => {
   try {
     const cities = req.body
-    let newDivision4
+    const newDivisionsArray = []
+
     if (!cities || !Array.isArray(cities)) {
       return res.status(400).json({
         success: false,
@@ -18,16 +19,24 @@ const createDivision4 = async (req, res) => {
 
     const dataFilter = cities.filter((city) => city.division1 === "Baden-Württemberg")
 
-   for (const city of dataFilter) {
-     const { postalCode, cityName, division1 } = city
-     let { division3 } = city
-     let referencedId, referencedModel, division3Data, division1Data;
+    for (const city of dataFilter) {
+      const { postalCode, cityName, division1 } = city
+      let { division3 } = city
+      let referencedId, referencedModel, division3Data, division1Data;
 
       const existingDivision = await Division4.findOne({ name: cityName })
 
       if (existingDivision) {
         existingDivision.postalCode.push(postalCode)
         await existingDivision.save()
+
+        const existingDivisionIndex = newDivisionsArray.findIndex(
+          (item) => item.division4._id.toString() === existingDivision._id.toString()
+        )
+
+        if (existingDivisionIndex !== -1) {
+          newDivisionsArray[existingDivisionIndex].division4.postalCode = existingDivision.postalCode
+        }
 
       } else {
         if(division3) {
@@ -52,27 +61,32 @@ const createDivision4 = async (req, res) => {
           referencedModel = "division1"
         }
     
-        newDivision4 = await Division4.create ({
+        const newDivision4 = await Division4.create ({
           name: cityName,
           postalCode,
           referencedId,
           referencedModel,
         })
 
-        await createLocation({
-          division4Id: newDivision._id,
-          division3Id: newDivision.referencedModel == "division3" 
+        const location = await createLocationInDivision4({
+          division4Id: newDivision4._id,
+          division3Id: newDivision4.referencedModel == "division3" 
             ? division3Data._id 
             : null, 
-          division2Id: newDivision.referencedModel == "division3" 
+          division2Id: newDivision4.referencedModel == "division3" 
             ? division3Data.upperDivision._id 
             : null, 
-          division1Id: newDivision.referencedModel == "division3" 
+          division1Id: newDivision4.referencedModel == "division3" 
             ? division3Data.upperDivision.upperDivision._id 
             : division1Data._id, 
-          countryId: newDivision.referencedModel == "division3"
+          countryId: newDivision4.referencedModel == "division3"
             ? division3Data.upperDivision.upperDivision.country
             : division1Data.country,
+        })
+
+        newDivisionsArray.push({
+          division4: newDivision4,
+          location
         })
       }
     }
@@ -80,7 +94,7 @@ const createDivision4 = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'Division4 created successfully',
-      result: newDivision4
+      result: newDivisionsArray
     })
   } catch (error) {
     return res.status(500).json({

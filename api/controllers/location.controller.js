@@ -1,13 +1,15 @@
 const Location = require('../models/location.model')
 
-const createLocation = async (locations) => {
+const createLocation = async (req, res) => {
   try {
+    const { division4Id, division3Id, division2Id, division1Id, countryId } = req.body
+
     const newLocation = await Location.create({
-      division4: locations.division4Id,
-      division3: locations.division3Id,
-      division2: locations.division2Id,
-      division1: locations.division1Id,
-      country: locations.countryId,
+      division4: division4Id,
+      division3: division3Id,
+      division2: division2Id,
+      division1: division1Id,
+      country: countryId,
     })
 
     return res.status(201).json({
@@ -21,6 +23,26 @@ const createLocation = async (locations) => {
       message: 'Error creating location',
       description: error.message
     })
+  }
+}
+
+const createLocationInDivision4 = async (locations) => {
+  try {
+    const newLocation = await Location.create({
+      division4: locations.division4Id,
+      division3: locations.division3Id,
+      division2: locations.division2Id,
+      division1: locations.division1Id,
+      country: locations.countryId,
+    })
+
+    return newLocation
+  } catch (error) {
+    throw new Error ({
+      success: false,
+      message: 'Error creating location',
+      description: error.message
+    }) 
   }
 }
 
@@ -121,6 +143,7 @@ const deleteLocation = async (req, res) => {
 
 module.exports = {
   createLocation,
+  createLocationInDivision4,
   getAllLocations,
   getLocationById,
   updateLocation,
