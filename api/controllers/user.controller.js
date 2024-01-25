@@ -43,7 +43,7 @@ const createUser = async (req, res) => {
 }
 
 // READ/GET - get all users
-const getUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
     const users = await User.find()
 
@@ -62,7 +62,7 @@ const getUsers = async (req, res) => {
 }
 
 // READ/GET - get ONE user by id
-const getUser = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate('organizationId')
     
@@ -200,7 +200,7 @@ const createOwnOrganizationUser = async (req, res) => {
 }
 
 // READ/GET - get all organization users
-const getOwnOrganizationUsers = async (req, res) => {
+const getAllOwnOrganizationUsers = async (req, res) => {
   try {
     const organizationId = res.locals.user.organizationId.toString()
     const users = await User.find({ organizationId });
@@ -221,7 +221,7 @@ const getOwnOrganizationUsers = async (req, res) => {
 }
 
 // READ/GET - get ONE user by id
-const getOwnOrganizationUser = async (req, res) => {
+const getOwnOrganizationUserById = async (req, res) => {
   try {
     const user = await User.findOne({
       _id: req.params.id,
@@ -315,13 +315,13 @@ const deleteOwnOrganizationUser = async (req, res) => {
 
 module.exports = {
   createUser,
-  getUsers,
-  getUser,
+  getAllUsers,
+  getUserById,
   updateUser,
   deleteUser,
   createOwnOrganizationUser,
-  getOwnOrganizationUsers,
-  getOwnOrganizationUser,
+  getAllOwnOrganizationUsers,
+  getOwnOrganizationUserById,
   updateOwnOrganizationUser,
   deleteOwnOrganizationUser,
 }

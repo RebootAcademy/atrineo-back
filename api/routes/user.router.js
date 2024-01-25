@@ -6,13 +6,13 @@ const {
 
 const { 
   createUser,
-  getUsers,
-  getUser,
+  getAllUsers,
+  getUserById,
   updateUser,
   deleteUser,
   createOwnOrganizationUser,
-  getOwnOrganizationUsers,
-  getOwnOrganizationUser,
+  getAllOwnOrganizationUsers,
+  getOwnOrganizationUserById,
   updateOwnOrganizationUser,
   deleteOwnOrganizationUser,
 } = require('../controllers/user.controller')
@@ -20,14 +20,14 @@ const {
 router
   // admin organization routes
   .post('/admin', isAdmin, createOwnOrganizationUser)
-  .get('/admin', isAdmin, getOwnOrganizationUsers)
-  .get('/admin/:id', isAdmin, getOwnOrganizationUser)
+  .get('/admin', isAdmin, getAllOwnOrganizationUsers)
+  .get('/admin/:id', isAdmin, getOwnOrganizationUserById)
   .patch('/admin/:id', isAdmin, updateOwnOrganizationUser)
   .delete('/admin/:id', isAdmin, deleteOwnOrganizationUser)
   // crud for wizard
   .post('/:organizationId', isWizard, createUser)
-  .get('/', isWizard, getUsers)
-  .get('/:id', isWizard, getUser)
+  .get('/', isWizard, getAllUsers)
+  .get('/:id', isWizard, getUserById)
   .patch('/:id', isWizard, updateUser)
   .delete('/:id', isWizard, deleteUser)
 
