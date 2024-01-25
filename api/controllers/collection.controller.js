@@ -44,6 +44,7 @@ const getAllCollections = async (req, res) => {
     .find()
     .populate({
       path: 'data',
+      select: '-geometry', //Ocultar el campo 'geometry'
       populate: {
         path: 'locationId',
         populate: [
