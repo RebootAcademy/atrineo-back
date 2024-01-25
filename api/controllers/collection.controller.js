@@ -26,7 +26,7 @@ const createCollection = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'Collection created successfully',
-      collection: newCollection,
+      result: newCollection,
     })
   } catch (error) {
     return res.status(500).json({
@@ -38,14 +38,14 @@ const createCollection = async (req, res) => {
 }
 
 // READ/GET - get all collections
-const getCollections = async (req, res) => {
+const getAllCollections = async (req, res) => {
   try {
     const collections = await Collection.find()
 
     return res.status(200).json({
       success: true,
       message: 'Fetching Collections OK',
-      collections,
+      result: collections,
     })
   } catch (error) {
     return res.status(500).json({
@@ -57,7 +57,7 @@ const getCollections = async (req, res) => {
 }
 
 // READ/GET - get ONE Collection by id
-const getCollection = async (req, res) => {
+const getCollectionById = async (req, res) => {
   try {
     const collection = await Collection.findById(req.params.id)
     
@@ -71,7 +71,7 @@ const getCollection = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Fetching Collection OK',
-      collection
+      result: collection
     })
   } catch (error) {
     return res.status(500).json({
@@ -81,6 +81,8 @@ const getCollection = async (req, res) => {
     })
   }
 }
+
+// GET OWN ORGANIZATION COLLECTIONS
 
 // UPDATE/PATCH - update ONE Collection by id
 const updateCollection = async (req, res) => {
@@ -101,7 +103,7 @@ const updateCollection = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Collection updated successfully',
-      collection: updatedCollection
+      result: updatedCollection
     })
   } catch (error) {
     return res.status(500).json({
@@ -127,7 +129,7 @@ const deleteCollection = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Collection deleted successfully',
-      collection: deletedCollection
+      result: deletedCollection
     })
   } catch (error) {
     return res.status(500).json({
@@ -140,8 +142,8 @@ const deleteCollection = async (req, res) => {
 
 module.exports = {
   createCollection,
-  getCollections,
-  getCollection,
+  getAllCollections,
+  getCollectionById,
   updateCollection,
   deleteCollection
 }

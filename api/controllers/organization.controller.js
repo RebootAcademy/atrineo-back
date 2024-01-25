@@ -8,7 +8,7 @@ const createOrganization = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'Organization created successfully',
-      organization: newOrganization
+      result: newOrganization
     })
   } catch (error) {
     return res.status(500).json({
@@ -27,7 +27,7 @@ const getAllOrganizations = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Fetching organizations OK',
-      organizations
+      result: organizations
     })
   } catch (error) {
     return res.status(500).json({
@@ -53,7 +53,7 @@ const getOrganizationById = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Fetching organization OK',
-      organization
+      result: organization
     })
   } catch (error) {
     return res.status(500).json({
@@ -77,14 +77,13 @@ const updateOrganization = async (req, res) => {
       return res.status(404).json({ 
         success: false,
         message: 'Organization not found'
-      }
-      )
+      })
     }
 
     return res.status(200).json({
       success: true,
       message: 'Organization updated successfully',
-      organization: updatedOrganization
+      result: updatedOrganization
     })
   } catch (error) {
     return res.status(500).json({
@@ -110,7 +109,7 @@ const deleteOrganization = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Organization deleted successfully',
-      organization: deletedOrganization
+      result: deletedOrganization
     })
   } catch (error) {
     return res.status(500).json({

@@ -7,16 +7,16 @@ const {
 
 const {
   createCollection,
-  getCollections,
-  getCollection,
+  getAllCollections,
+  getCollectionById,
   updateCollection,
   deleteCollection
 } = require('../controllers/collection.controller')
 
 router
   .post('/:ownerId', isAuth, isWizard, createCollection)
-  .get('/', getCollections)
-  .get('/:id', getCollection)
+  .get('/', getAllCollections)
+  .get('/:id', getCollectionById)
   .patch('/:id', isAuth, isWizard, updateCollection)
   .delete('/:id', isAuth, isWizard, deleteCollection)
 

@@ -39,7 +39,7 @@ const createData = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'Data created successfully',
-      datas: newDataArray
+      result: newDataArray
     })
   } catch (error) {
     return res.status(400).json({
@@ -51,14 +51,14 @@ const createData = async (req, res) => {
 }
 
 // READ/GET - get all datas
-const getData = async (req, res) => {
+const getAllData = async (req, res) => {
   try {
     const datas = await Data.find()
 
     return res.status(200).json({
       success: true,
       message: 'Fetching Datas OK',
-      datas,
+      result: datas,
     })
   } catch (error) {
     return res.status(500).json({
@@ -70,7 +70,7 @@ const getData = async (req, res) => {
 }
 
 // READ/GET - get ONE data by id
-const getOneData = async (req, res) => {
+const getDataById = async (req, res) => {
   try {
     const data = await Data.findById(req.params.id)
     if (!data) {
@@ -83,7 +83,7 @@ const getOneData = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Fetching data OK',
-      collection
+      result: data
     })
   } catch (error) {
     return res.status(500).json({
@@ -113,7 +113,7 @@ const updateData = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Data updated successfully',
-      data: updatedData
+      result: updatedData
     })
   } catch (error) {
     return res.status(500).json({
@@ -139,7 +139,7 @@ const deleteData = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Data deleted successfully',
-      data: deletedData
+      result: deletedData
     })
   } catch (error) {
     return res.status(500).json({
@@ -152,8 +152,8 @@ const deleteData = async (req, res) => {
 
 module.exports = {
   createData,
-  getData,
-  getOneData,
+  getAllData,
+  getDataById,
   updateData,
   deleteData
 }
