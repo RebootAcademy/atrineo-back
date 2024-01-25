@@ -172,125 +172,124 @@ Information related to companies/organizations, including information on locatio
 
 ### /organizations
 
-| Method | Endpoint     | Returns                                                    | Role   |
-|--------|--------------|------------------------------------------------------------|--------|
-| POST   | /            | { success: boolean, message: String, newOrganization }     | wizard |
-| GET    | /            | { success: boolean, message: String, organizations }       | wizard |
-| GET    | /:id         | { success: boolean, message: String, organization }        | wizard |
-| PATCH  | /:id         | { success: boolean, message: String, updatedOrganization } | wizard |
-| DELETE | /:id         | { success: boolean, message: String, deletedOrganization } | wizard |
+| Method | Description           | Endpoint     | Returns                                                    | Role   |
+|--------|-----------------------|--------------|------------------------------------------------------------|--------|
+| POST   | Create Organization   | /            | { success: boolean, message: String, result: Object }      | wizard |
+| GET    | Get All Organizations | /            | { success: boolean, message: String, result: Object }      | wizard |
+| GET    | Get One Organization  | /:id         | { success: boolean, message: String, result: Object }      | wizard |
+| PATCH  | Update Organization   | /:id         | { success: boolean, message: String, result: Object }      | wizard |
+| DELETE | Delete Organization   | /:id         | { success: boolean, message: String, result: Object }      | wizard |
 
 
 ### /users
 
-| Method | Endpoint         |  Returns                                            | Role   |
-|--------|------------------|-----------------------------------------------------|--------|
-| POST   | /admin           | { success: boolean, message: String, newUser }      | admin  |
-| GET    | /admin           | { success: boolean, message: String, users }        | admin  |
-| GET    | /admin/:id       | { success: boolean, message: String, user }         | admin  |
-| PATCH  | /admin/:id       | { success: boolean, message: String, updatedUser }  | admin  |
-| DELETE | /admin/:id       | { success: boolean, message: String, deletedUser }  | admin  |
-| POST   | /:organizationId | { success: boolean, message: String, newUser }      | wizard |
-| GET    | /                | { success: boolean, message: String, users }        | wizard |
-| GET    | /:id             | { success: boolean, message: String, user }         | wizard |
-| PATCH  | /:id             | { success: boolean, message: String, updatedUser }  | wizard |
-| DELETE | /:id             | { success: boolean, message: String, deletedUser }  | wizard |
+| Method | Description                    | Endpoint     |  Returns                                               | Role   |
+|--------|--------------------------------|--------------|--------------------------------------------------------|--------|
+| POST   | Create Own Organization User   | /admin       | { success: boolean, message: String, result: Object }  | admin  |
+| GET    | Get All Own Organization Users | /admin       | { success: boolean, message: String, result: Object }  | admin  |
+| GET    | Get One Own Organization User  | /admin/:id   | { success: boolean, message: String, result: Object }  | admin  |
+| PATCH  | Update Own Organization User   | /admin/:id   | { success: boolean, message: String, result: Object }  | admin  |
+| DELETE | Delete Own Organization User   | /admin/:id   | { success: boolean, message: String, result: Object }  | admin  |
+| POST   | Create User                    | /:organizationId | { success: boolean, message: String, result: Object } | wizard |
+| GET    | Get All Users                  | /            | { success: boolean, message: String, result: Object }  | wizard |
+| GET    | Get One User   | /:id             | { success: boolean, message: String, result: Object }         | wizard |
+| PATCH  | Update User   | /:id             | { success: boolean, message: String, result: Object }  | wizard |
+| DELETE | Delete User   | /:id             | { success: boolean, message: String, result: Object }  | wizard |
 
 
 ### /auth
 
-| Method | Endpoint  | Returns                    | Role  |
-|--------|-----------|----------------------------|-------|
-| POST   | /login    | { message: String, token } | guest |
+| Method | Description | Endpoint  | Returns                            | Role  |
+|--------|-------------|-----------|------------------------------------|-------|
+| POST   | Login       | /login    | { message: String, result: token } | guest |
 
 
 ### /country
 
-| Method | Endpoint | Returns                                                | Role   |
-|--------|----------|--------------------------------------------------------|--------|
-| POST   | /        | { success: boolean, message: String }                  | wizard |
-| GET    | /        | { success: boolean, message: String, countries }       | guest  |
-| GET    | /:id     | { success: boolean, message: String, country }         | guest  |
-| PATCH  | /:id     | { success: boolean, message: String, updatedCountry }  | wizard |
-| DELETE | /:id     | { success: boolean, message: String, deletedCountry }  | wizard |
+| Method | Description       | Endpoint | Returns                                                | Role   |
+|--------|-------------------|----------|--------------------------------------------------------|--------|
+| POST   | Create Country    | /        | { success: boolean, message: String, result: Object }  | wizard |
+| GET    | Get All Countries | /        | { success: boolean, message: String, result: Object }  | guest  |
+| GET    | Get One Country   | /:id     | { success: boolean, message: String, result: Object }  | guest  |
+| PATCH  | Update Country    | /:id     | { success: boolean, message: String, result: Object }  | wizard |
+| DELETE | Delete Country    | /:id     | { success: boolean, message: String, result: Object }  | wizard |
 
 
 ### /division1
 
-| Method | Endpoint | Returns                                                  | Role   |
-|--------|----------|----------------------------------------------------------|--------|
-| POST   | /        | { success: boolean, message: String }                    | wizard |
-| GET    | /        | { success: boolean, message: String, allDivision1 }      | guest  |
-| GET    | /:id     | { success: boolean, message: String, division1 }         | guest  |
-| PATCH  | /:id     | { success: boolean, message: String, updatedDivision1 }  | wizard |
-| DELETE | /:id     | { success: boolean, message: String, deletedDivision1 }  | wizard |
+| Method | Description       | Endpoint | Returns                                                  | Role   |
+|--------|-------------------|----------|----------------------------------------------------------|--------|
+| POST   | Create Division1  | /        | { success: boolean, message: String, result: Object }    | wizard |
+| GET    | Get All Division1 | /        | { success: boolean, message: String, result: Object }    | guest  |
+| GET    | Get One Division1 | /:id     | { success: boolean, message: String, result: Object }    | guest  |
+| PATCH  | Update Division1  | /:id     | { success: boolean, message: String, result: Object }    | wizard |
+| DELETE | Delete Division1 | /:id     | { success: boolean, message: String, result: Object }    | wizard |
 
 
 ### /division2
 
-
-| Method | Endpoint | Returns                                                  | Role   |
-|--------|----------|----------------------------------------------------------|--------|
-| POST   | /        | { success: boolean, message: String }                    | wizard |
-| GET    | /        | { success: boolean, message: String, allDivision2 }      | guest  |
-| GET    | /:id     | { success: boolean, message: String, division2 }         | guest  |
-| PATCH  | /:id     | { success: boolean, message: String, updatedDivision2 }  | wizard |
-| DELETE | /:id     | { success: boolean, message: String, deletedDivision2 }  | wizard |
+| Method | Description       | Endpoint | Returns                                               | Role   |
+|--------|-------------------|----------|-------------------------------------------------------|--------|
+| POST   | Create Division2  | /        | { success: boolean, message: String, result: Object } | wizard |
+| GET    | Get All Division2 | /        | { success: boolean, message: String, result: Object } | guest  |
+| GET    | Get One Division2 | /:id     | { success: boolean, message: String, result: Object } | guest  |
+| PATCH  | Update Division2  | /:id     | { success: boolean, message: String, result: Object } | wizard |
+| DELETE | Delete Division2  | /:id     | { success: boolean, message: String, result: Object } | wizard |
 
 
 ### /division3
 
 | Method | Endpoint | Returns                                                  | Role   |
 |--------|----------|----------------------------------------------------------|--------|
-| POST   | /        | { success: boolean, message: String }                    | wizard |
-| GET    | /        | { success: boolean, message: String, allDivision3 }      | guest  |
-| GET    | /:id     | { success: boolean, message: String, division3 }         | guest  |
-| PATCH  | /:id     | { success: boolean, message: String, updatedDivision3 }  | wizard |
-| DELETE | /:id     | { success: boolean, message: String, deletedDivision3 }  | wizard |
+| POST   | Create Division3 | /        | { success: boolean, message: String, result: Object }                    | wizard |
+| GET    | Get All Division3 | /        | { success: boolean, message: String, result: Object }      | guest  |
+| GET    | Get One Division3 | /:id     | { success: boolean, message: String, result: Object }         | guest  |
+| PATCH  | Update Division3 | /:id     | { success: boolean, message: String, result: Object }  | wizard |
+| DELETE | Delete Division3 | /:id     | { success: boolean, message: String, result: Object }  | wizard |
 
 
 ### /division4
 
-| Method | Endpoint | Returns                                                  | Role   |
-|--------|----------|----------------------------------------------------------|--------|
-| POST   | /        | { success: boolean, message: String }                    | wizard |
-| GET    | /        | { success: boolean, message: String, allDivision4 }      | guest  |
-| GET    | /:id     | { success: boolean, message: String, division4 }         | guest  |
-| PATCH  | /:id     | { success: boolean, message: String, updatedDivision4 }  | wizard |
-| DELETE | /:id     | { success: boolean, message: String, deletedDivision4 }  | wizard |
+| Method | Description       | Endpoint | Returns                                                | Role   |
+|--------|-------------------|----------|--------------------------------------------------------|--------|
+| POST   | Create Division4  | /        | { success: boolean, message: String, result: Object }  | wizard |
+| GET    | Get All Division4 | /        | { success: boolean, message: String, result: Object }  | guest  |
+| GET    | Get One Division4 | /:id     | { success: boolean, message: String, result: Object }  | guest  |
+| PATCH  | Update Division4  | /:id     | { success: boolean, message: String, result: Object }  | wizard |
+| DELETE | Delete Division4  | /:id     | { success: boolean, message: String, result: Object }  | wizard |
 
 
 ### /location
 
-| Method | Endpoint | Returns                                                 | Role   |
-|--------|----------|---------------------------------------------------------|--------|
-| POST   | /        |                                                         | wizard |
-| GET    | /        | { success: boolean, message: String, locations }        | wizard |
-| GET    | /:id     | { success: boolean, message: String, location }         | wizard |
-| PATCH  | /:id     | { success: boolean, message: String, updatedLocation }  | wizard |
-| DELETE | /:id     | { success: boolean, message: String, deletedLocation }  | wizard |
+| Method | Description       | Endpoint | Returns                                                 | Role   |
+|--------|-------------------|----------|---------------------------------------------------------|--------|
+| POST   | Create Location   | /        |                                                         | wizard |
+| GET    | Get All Locations | /        | { success: boolean, message: String, result: Object }   | wizard |
+| GET    | Get One Location  | /:id     | { success: boolean, message: String, result: Object }   | wizard |
+| PATCH  | Update Location   | /:id     | { success: boolean, message: String, result: Object }   | wizard |
+| DELETE | Delete Location   | /:id     | { success: boolean, message: String, result: Object }   | wizard |
 
 
 ### /collection
 
-| Method | Endpoint      | Returns                                                    | Role   |
-|--------|---------------|------------------------------------------------------------|--------|
-| POST   | /:ownerId     | { success: boolean, message: String, newCollection }       | wizard |
-| GET    | /             | { success: boolean, message: String, collections }         | guest  |
-| GET    | /:id          | { success: boolean, message: String, collection }          | guest  |
-| PATCH  | /:id          | { success: boolean, message: String, updatedCollections }  | wizard |
-| DELETE | /:id          | { success: boolean, message: String, deletedCollections }  | wizard |
+| Method | Description         | Endpoint      | Returns                                               | Role   |
+|--------|---------------------|---------------|-------------------------------------------------------|--------|
+| POST   | Create Collection   | /:ownerId     | { success: boolean, message: String, result: Object } | wizard |
+| GET    | Get All Collections | /             | { success: boolean, message: String, result: Object } | guest  |
+| GET    | Get One Location    | /:id          | { success: boolean, message: String, result: Object } | guest  |
+| PATCH  | Update Location     | /:id          | { success: boolean, message: String, result: Object } | wizard |
+| DELETE | Delete Location     | /:id          | { success: boolean, message: String, result: Object } | wizard |
 
 
 ### /data
 
-| Method | Endpoint           | Returns                                             | Role   |
-|--------|--------------------|-----------------------------------------------------|--------|
-| POST   | /:collectionId     | { success: boolean, message: String, newDatas }     | wizard |
-| GET    | /                  | { success: boolean, message: String, datas }        | wizard |
-| GET    | /:id               | { success: boolean, message: String, data }         | wizard |
-| PATCH  | /:id               | { success: boolean, message: String, updatedData }  | wizard |
-| DELETE | /:id               | { success: boolean, message: String, deletedData }  | wizard |
+| Method | Description  | Endpoint        | Returns                                               | Role   |
+|--------| -------------|-----------------|-------------------------------------------------------|--------|
+| POST   | Create Data  | /:collectionId  | { success: boolean, message: String, result: Object } | wizard |
+| GET    | Get All Data | /               | { success: boolean, message: String, result: Object } | wizard |
+| GET    | Get One Data | /:id            | { success: boolean, message: String, result: Object } | wizard |
+| PATCH  | Update Data  | /:id            | { success: boolean, message: String, result: Object } | wizard |
+| DELETE | Delete Data  | /:id            | { success: boolean, message: String, result: Object } | wizard |
 
 
 ## Team
