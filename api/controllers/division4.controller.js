@@ -52,7 +52,7 @@ const createDivision4 = async (req, res) => {
           referencedModel = "division1"
         }
     
-        const newDivision4 = await Division4.create ({
+        newDivision4 = await Division4.create ({
           name: cityName,
           postalCode,
           referencedId,
