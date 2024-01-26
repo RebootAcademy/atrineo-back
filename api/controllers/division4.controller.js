@@ -105,6 +105,83 @@ const createDivision4 = async (req, res) => {
   }
 }
 
+const createOneDivision4 = async (req, res) => {
+  try {
+    const city = req.body
+    if (!city) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid data in the request body'
+      })
+    }
+
+    const { postalCode, cityName, division1, division3 } = city
+    let referencedId, referencedModel, division3Data, division1Data
+
+    const existingDivision = await Division4.findOne({ name: cityName })
+
+    if (existingDivision) {
+      existingDivision.postalCode.push(postalCode)
+      await existingDivision.save()
+    } else {
+      if (division3) {
+        division3 = cleanDistrictName(division3)
+
+        division3Data = await Division3.findOne({ name: division3 })
+          .populate({
+            path: 'upperDivision',
+            populate: {
+              path: 'upperDivision',
+            },
+          })
+          .exec()
+
+        referenceId = division3Data._id
+        referencedModel = 'division3'
+      } else {
+        division1Data = await Division1.findOne({ name: division1 })
+        referencedId = division1Data._id
+        referencedModel = 'division1'
+      }
+
+      const newDivision4 = await Division4.create({
+        name: cityName,
+        postalCode,
+        referencedId,
+        referencedModel,
+      })
+
+      await createLocation({
+        division4Id: newDivision4._id,
+        division3Id: referencedModel === 'division3'
+          ? division3Data._id
+          : null,
+        division2Id: referencedModel === 'division3'
+          ? division3Data.upperDivision._id
+          : null,
+        division1Id: referencedModel === 'division3'
+          ? division3Data.upperDivision.upperDivision._id
+          : division1Data._id,
+        countryId: referencedModel === 'division3'
+          ? division3Data.upperDivision.upperDivision.country
+          : division1Data.country,
+      })
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: 'Division4 created successfully',
+      result: newDivision4
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error creating division4',
+      error: error.message,
+    })
+  }
+}
+
 const getAllDivision4 = async (req, res) => {
   try {
     const divisions = await Division4.find()
@@ -200,6 +277,7 @@ const deleteDivision4 = async (req, res) => {
 
 module.exports = {
   createDivision4,
+  createOneDivision4,
   getAllDivision4,
   getDivision4ById,
   updateDivision4,
