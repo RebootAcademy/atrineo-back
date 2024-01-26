@@ -52,6 +52,46 @@ const createDivision3 = async (req, res) => {
   }
 }
 
+const createOneDivision3 = async (req, res) => {
+  try {
+    const { properties, geometry } = req.body
+
+    const division2 = await Division2.findOne({ geojsonId: properties.ID_2 })
+
+    if (!division2) {
+      return res.status(404).json({
+        success: false,
+        message: 'Division2 not found'
+      })
+    }
+
+    let coordinates
+    if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates
+    if (geometry.type === 'Polygon') coordinates = [geometry.coordinates]
+
+    const newDivision3 = await Division3.create({
+      upperDivision: division2._id,
+      name: properties.NAME_3,
+      type: properties.ENGTYPE_3,
+      geojsonId: properties.ID_3,
+      geometry: coordinates,
+    })
+
+    return res.status(201).json({
+      success: true,
+      message: 'Division3 created successfully',
+      result: newDivision3
+    })
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error adding division3 to the database',
+      error: error.message,
+    })
+  }
+}
+
 const getAllDivision3 = async (req, res) => {
   try {
     const divisions = await Division3.find()
@@ -146,6 +186,7 @@ const deleteDivision3 = async (req, res) => {
 
 module.exports = {
   createDivision3,
+  createOneDivision3,
   getAllDivision3,
   getDivision3ById,
   updateDivision3,

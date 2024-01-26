@@ -136,7 +136,7 @@ const createOneDivision4 = async (req, res) => {
           })
           .exec()
 
-        referenceId = division3Data._id
+        referencedId = division3Data._id
         referencedModel = 'division3'
       } else {
         division1Data = await Division1.findOne({ name: division1 })
