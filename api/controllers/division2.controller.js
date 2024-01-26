@@ -46,6 +46,45 @@ const createDivision2 = async (req, res) => {
   }
 }
 
+const createOneDivision2 = async (req, res) => {
+  try {
+    const { properties, geometry } = req.body
+
+    const division1 = await Division1.findOne({ geojsonId: properties.ID_1 })
+
+    if (!division1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Division1 not found'
+      })
+    }
+
+    let coordinates
+    if (geometry.type === 'MultiPolygon') coordinates = geometry.coordinates
+    if (geometry.type === 'Polygon') coordinates = [geometry.coordinates]
+
+    const newDivision2 = await Division2.create({
+      upperDivision: division1._id,
+      name: properties.NAME_2,
+      type: properties.ENGTYPE_2,
+      geojsonId: properties.ID_2,
+      geometry: coordinates,
+    })
+
+    return res.status(201).json({
+      success: true,
+      message: 'Division2 created successfully',
+      result: newDivision2
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error creating division2',
+      description: error.message
+    })
+  }
+}
+
 const getAllDivision2 = async (req, res) => {
   try {
     const divisions = await Division2.find()
@@ -130,6 +169,7 @@ const deleteDivision2 = async (req, res) => {
 
 module.exports = {
   createDivision2,
+  createOneDivision2,
   getAllDivision2,
   getDivision2ById,
   updateDivision2,

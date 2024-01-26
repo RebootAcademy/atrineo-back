@@ -7,6 +7,7 @@ const {
 
 const {
   createDivision2,
+  createOneDivision2,
   getAllDivision2,
   getDivision2ById,
   updateDivision2,
@@ -15,6 +16,7 @@ const {
 
 router
   .post('/', isAuth, isWizard, createDivision2)
+  .post('/', isAuth, isWizard, createOneDivision2)
   .get('/', getAllDivision2)
   .get('/:id', getDivision2ById)
   .patch('/:id', isAuth, isWizard, updateDivision2)
