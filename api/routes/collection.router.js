@@ -10,7 +10,8 @@ const {
   getAllCollections,
   getCollectionById,
   updateCollection,
-  deleteCollection
+  deleteCollection,
+  getAllOwnOrganizationCollections,
 } = require('../controllers/collection.controller')
 
 router
@@ -19,5 +20,7 @@ router
   .get('/:id', getCollectionById)
   .patch('/:id', isAuth, isWizard, updateCollection)
   .delete('/:id', isAuth, isWizard, deleteCollection)
+
+  .get('/', isAuth, isWizard, getAllOwnOrganizationCollections) // 
 
 module.exports = router

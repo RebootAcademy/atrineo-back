@@ -16,7 +16,7 @@ const {
 
 router
   .post('/', isAuth, isWizard, createDivision4)
-  .post('/', isAuth, isWizard, createOneDivision4)
+  .post('/one', isAuth, isWizard, createOneDivision4)
   .get('/', getAllDivision4)
   .get('/:id', getDivision4ById)
   .patch('/:id', isAuth, isWizard, updateDivision4)
