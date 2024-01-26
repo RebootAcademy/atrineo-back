@@ -169,10 +169,44 @@ const deleteCollection = async (req, res) => {
   }
 }
 
+const getAllOwnOrganizationCollections = async (req, res) => {
+  try {
+    const organizationId = res.locals.user.organizationId.toString()
+    const collections = await Collection.find({ ownerId: organizationId })
+      .populate({
+        path: 'data',
+        select: '-geometry',
+        populate: {
+          path: 'locationId',
+          populate: [
+            { path: 'country', select: '-geometry' },
+            { path: 'division1', select: '-geometry -country' },
+            { path: 'division2', select: '-geometry -upperDivision' },
+            { path: 'division3', select: '-geometry -upperDivision' },
+            { path: 'division4', select: '-referencedId -referencedModel' },
+          ],
+        },
+      })
+
+    return res.status(200).json({
+      success: true,
+      message: 'Fetching Own Organization Collections OK',
+      result: collections,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching own organization collections',
+      description: error.message,
+    })
+  }
+}
+
 module.exports = {
   createCollection,
   getAllCollections,
   getCollectionById,
   updateCollection,
-  deleteCollection
+  deleteCollection,
+  getAllOwnOrganizationCollections,
 }
