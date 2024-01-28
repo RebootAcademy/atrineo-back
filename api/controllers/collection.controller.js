@@ -169,6 +169,37 @@ const deleteCollection = async (req, res) => {
   }
 }
 
+const getPublicCollections = async (req, res) => {
+  try {
+    const collections = await Collection.find({ public: true })
+      .populate({
+        path: 'data',
+        select: '-geometry',
+        populate: {
+          path: 'locationId',
+          populate: [
+            { path: 'country', select: '-geometry' },
+            { path: 'division1', select: '-geometry -country' },
+            { path: 'division2', select: '-geometry -upperDivision' },
+            { path: 'division3', select: '-geometry -upperDivision' },
+            { path: 'division4', select: '-referencedId -referencedModel' },
+          ],
+        },
+      })
+    return res.status(200).json({
+      success: true,
+      message: 'Fetching Public Collections OK',
+      result: collections,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching public collections',
+      description: error.message
+    })
+  }
+}
+
 const getAllOwnOrganizationCollections = async (req, res) => {
   try {
     const organizationId = res.locals.user.organizationId.toString()
@@ -208,5 +239,6 @@ module.exports = {
   getCollectionById,
   updateCollection,
   deleteCollection,
+  getPublicCollections,
   getAllOwnOrganizationCollections,
 }
