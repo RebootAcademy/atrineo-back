@@ -2,6 +2,7 @@ const router = require('express').Router()
 
 const {
   createData,
+  createOneData,
   getAllData,
   getDataById,
   updateData,
@@ -9,6 +10,7 @@ const {
 } = require('../controllers/data.controller')
 
 router
+  .post('/', createOneData)
   .post('/:collectionId', createData)
   .get('/', getAllData)
   .get('/:id', getDataById)

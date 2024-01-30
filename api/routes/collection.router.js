@@ -10,6 +10,7 @@ const {
   getAllCollections,
   getCollectionById,
   updateCollection,
+  addDataToCollection,
   deleteCollection,
   getPublicCollections,
   getAllOwnOrganizationCollections,
@@ -17,11 +18,12 @@ const {
 
 router
   .post('/:ownerId', isAuth, isWizard, createCollection)
-  .get('/', getAllCollections)
+  .get('/', isAuth, isWizard, getAllCollections)
   .get('/public', getPublicCollections)
   .get('/organization', isAuth, isWizard, getAllOwnOrganizationCollections)
   .get('/:id', getCollectionById)
   .patch('/:id', isAuth, isWizard, updateCollection)
+  .patch('/:id/add', isAuth, isWizard, addDataToCollection)
   .delete('/:id', isAuth, isWizard, deleteCollection)
 
 

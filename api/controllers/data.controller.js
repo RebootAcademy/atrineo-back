@@ -57,6 +57,36 @@ const createData = async (req, res) => {
   }
 }
 
+const createOneData = async(req, res) => {
+  try {
+    if(req.body.geometry) transformData(req.body.geometry)
+
+    let division4
+    if (req.body.districtId) {
+      division4 = await Division4.findOne({ postalCode: { $in: req.body.districtId } })
+    } else {
+      division4 = await Division4.findOne({ name: req.body.districtName })
+    }
+    const location = await Location.findOne({ division4 })
+
+    const data = await Data.create({
+      ...req.body,
+      locationId: location._id
+    })
+    return res.status(200).json({
+      success: true,
+      message: 'Creating one data OK',
+      result: data,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error creating one data',
+      description: error.message,
+    })
+  }
+}
+
 // READ/GET - get all datas
 const getAllData = async (req, res) => {
   try {
@@ -159,6 +189,7 @@ const deleteData = async (req, res) => {
 
 module.exports = {
   createData,
+  createOneData,
   getAllData,
   getDataById,
   updateData,

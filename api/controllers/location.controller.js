@@ -67,6 +67,15 @@ const getAllLocations = async (req, res) => {
 const getLocationById = async (req, res) => {
   try {
     const location = await Location.findById(req.params.id)
+      .populate(
+          [
+            { path: 'country', select: '-geometry' },
+            { path: 'division1', select: '-geometry -country' },
+            { path: 'division2', select: '-geometry -upperDivision' },
+            { path: 'division3', select: '-geometry -upperDivision' },
+            { path: 'division4', select: '-referencedId -referencedModel' },
+          ],
+    )
     if (!location) {
       return res.status(404).json({ 
         success: false,

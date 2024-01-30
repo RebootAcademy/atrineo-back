@@ -1,5 +1,6 @@
 const Collection = require('../models/collection.model')
 const Organization = require('../models/organization.model')
+const Data = require('../models/data.model')
 
 // CREATE/POST - create a new collection
 const createCollection = async (req, res) => {
@@ -143,6 +144,46 @@ const updateCollection = async (req, res) => {
   }
 }
 
+const addDataToCollection = async (req, res) => {
+  try {
+    const newDataIds = req.body.newDataIds
+
+    for (const dataId of newDataIds) {
+      const data = await Data.findById(dataId)
+      if (!data) {
+        return res.status(404).json({
+          success: false,
+          message: `Data not found for ID: ${dataId}`
+        })
+      }
+    }
+
+    const updatedCollection = await Collection.findByIdAndUpdate(
+      req.params.id,
+      { $push: { data: { $each: newDataIds } } },
+      { new: true }
+    )
+    if (!updatedCollection) {
+      return res.status(404).json({
+        success: false,
+        message: 'Collection not found'
+      })
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Data added to collection successfully',
+      result: updatedCollection
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error adding data to Collection',
+      description: error.message
+    })
+  }
+}
+
 // DELETE - delete ONE Collection by id
 const deleteCollection = async (req, res) => {
   try {
@@ -238,6 +279,7 @@ module.exports = {
   getAllCollections,
   getCollectionById,
   updateCollection,
+  addDataToCollection,
   deleteCollection,
   getPublicCollections,
   getAllOwnOrganizationCollections,
