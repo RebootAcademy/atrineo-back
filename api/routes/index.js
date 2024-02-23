@@ -27,7 +27,7 @@ router
   .use('/division3', division3Router)
   .use('/division4', division4Router)
   .use('/auth', authRouter)
-  .use('/data', isAuth, isWizard, dataRouter)
+  .use('/data', dataRouter)
   .use('/collection', collectionRouter)
 
 module.exports = router

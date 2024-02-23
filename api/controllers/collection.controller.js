@@ -6,7 +6,7 @@ const Data = require('../models/data.model')
 const createCollection = async (req, res) => {
   try {
     const { ownerId } = req.params
-    const { data, public } = req.body
+    const { data, public, collectionType } = req.body
 
     const ownerOrganization = await Organization.findById(ownerId)
     if (!ownerOrganization) {
@@ -16,11 +16,13 @@ const createCollection = async (req, res) => {
       })
     }
 
+    console.log(res.locals.user)
     // Collection is created
     const newCollection = await Collection.create({
       public: public || false,
       ownerId,
-      creatorId: res.locals.user.organizationId.toString(),
+      creatorId: res.locals.user.organization,
+      collectionType,
       data: data || []
     })
 

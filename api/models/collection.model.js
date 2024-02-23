@@ -8,17 +8,24 @@ const collectionSchema = new Schema({
   },
   ownerId: {
     type: Schema.Types.ObjectId,
-    ref: 'organization',
+    ref: "organization",
   },
   creatorId: {
     type: Schema.Types.ObjectId,
-    ref: 'organization',
+    ref: "organization",
   },
-  data: [{
-    type: Schema.Types.ObjectId,
-    ref: 'data',
-  }],
-})
+  data: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "data",
+    },
+  ],
+  collectionType: {
+    type: String,
+    enum: ["startups", "regions"],
+    required: [true, "Please select type"]
+  },
+});
 
 const collectionModel = mongoose.model('collection', collectionSchema)
 

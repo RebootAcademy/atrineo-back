@@ -187,11 +187,75 @@ const deleteData = async (req, res) => {
   }
 }
 
+const uploadDemoCsv = async (req, res) => {
+  try {
+    const { body, collectionType } = req.body
+
+    const collection = await Collection.findByIdAndUpdate(process.env.DEMO_ID, {
+      data: [],
+      collectionType
+    });
+
+    await Data.deleteMany({})
+
+    await Promise.all(body.map(async element => {
+
+      let division4
+      let arr = []
+      if (element.districtId) {
+        division4 = await Division4.findOne({ postalCode: { $in: element.districtId } })
+      } else {
+        division4 = await Division4.findOne({ name: element.districtName })
+      }
+      const location = await Location.findOne({ division4 })
+
+      for (key in element) {
+        const obj = {}
+        obj.fieldName = key
+        if (key === 'latitude' || key === 'longitude') {
+          obj.fieldValue = parseFloat(element[key].replace(',', '.'))
+        } else {
+          obj.fieldValue = element[key]
+        }
+        if (element[key] === 'FALSE' || element[key] === 'TRUE') {
+          obj.fieldType = 'boolean'
+        } else {
+          obj.fieldType = typeof obj.fieldValue
+        }
+        arr.push(obj)
+      }
+
+      const newData = await Data.create({
+        fields: arr,
+        locationId: location._id
+      })
+
+      collection.data.push(
+        newData._id
+      )
+    }))
+    await collection.save()
+
+    return res.status(200).json({
+      success: true,
+      message: "New csv data uploaded succesfully",
+      result: collection,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error uploading new csv data",
+      description: error.message,
+    });
+  }
+}
+
 module.exports = {
   createData,
   createOneData,
   getAllData,
   getDataById,
   updateData,
-  deleteData
+  deleteData,
+  uploadDemoCsv
 }

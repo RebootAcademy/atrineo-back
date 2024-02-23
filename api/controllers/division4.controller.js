@@ -275,6 +275,42 @@ const deleteDivision4 = async (req, res) => {
   }
 }
 
+const addCoordinates = async (req, res) => {
+  try {
+    const { body } = req.body
+    await Promise.all(body.map(async district => {
+      const lat = district.latitude.replace(',', '.')
+      const lon = district.longitude.replace(",", ".");
+
+      await Division4.findOneAndUpdate(
+        { name: district.districtName },
+        {
+          $set: {
+            latitude: lat,
+            longitude: lon
+          },
+          $unset: {
+            lat: '',
+            lon: ''
+          }
+        }
+      );
+    }))
+
+    return res.status(200).json({
+      success: true,
+      message: "Added coordinates successfully",
+      result: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error adding coordinates",
+      description: error.message,
+    }); 
+  }
+}
+
 module.exports = {
   createDivision4,
   createOneDivision4,
@@ -282,4 +318,5 @@ module.exports = {
   getDivision4ById,
   updateDivision4,
   deleteDivision4,
+  addCoordinates
 }

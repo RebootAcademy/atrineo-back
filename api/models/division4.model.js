@@ -22,6 +22,12 @@ const division4Schema = new Schema({
     type: String,
     enum: ['division1', 'division2', 'division3'],
   },
+  latitude: {
+    type: Number
+  },
+  longitude: {
+    type: Number
+  }
 })
 
 // Ensure that geojsonId is unique for each upperDivision

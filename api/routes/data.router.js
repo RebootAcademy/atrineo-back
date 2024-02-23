@@ -3,6 +3,7 @@ const router = require('express').Router()
 const {
   createData,
   createOneData,
+  uploadDemoCsv,
   getAllData,
   getDataById,
   updateData,
@@ -11,6 +12,7 @@ const {
 
 router
   .post('/', createOneData)
+  .post('/demo', uploadDemoCsv)
   .post('/:collectionId', createData)
   .get('/', getAllData)
   .get('/:id', getDataById)
