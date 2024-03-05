@@ -8,14 +8,7 @@ const login = async (req, res) => {
   try {
     const { email, password, /* remember */ } = req.body
 
-    const user = await User.findOne({
-      where: {
-        email,
-      },
-      attributes: {
-        exclude: ["password"],
-      },
-    });
+    const user = await User.findOne({ email }, '-password')
 
     if(!user || !compareSync(password, user.password)) {
       return res.status(500).send(
