@@ -8,7 +8,12 @@ const login = async (req, res) => {
   try {
     const { email, password, /* remember */ } = req.body
 
-    const user = await User.findOne({ email }, {
+    const user = await User.findOne(
+    { 
+      where: {
+        email
+      }
+    }, {
       attributes: {
         exclude: ['password']
       }
