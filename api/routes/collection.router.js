@@ -20,7 +20,7 @@ router
   .post('/:ownerId', isAuth, isWizard, createCollection)
   .get('/', isAuth, isWizard, getAllCollections)
   .get('/public', getPublicCollections)
-  .get('/organization', isAuth, isWizard, getAllOwnOrganizationCollections)
+  .get('/organization', isAuth, getAllOwnOrganizationCollections)
   .get('/:id', getCollectionById)
   .patch('/:id', isAuth, isWizard, updateCollection)
   .patch('/:id/add', isAuth, isWizard, addDataToCollection)

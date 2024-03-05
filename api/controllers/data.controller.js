@@ -212,6 +212,7 @@ const uploadDemoCsv = async (req, res) => {
       for (key in element) {
         const obj = {}
         obj.fieldName = key
+
         if (key === 'latitude' || key === 'longitude') {
           obj.fieldValue = parseFloat(element[key].replace(',', '.'))
         } else {
@@ -222,9 +223,9 @@ const uploadDemoCsv = async (req, res) => {
         } else {
           obj.fieldType = typeof obj.fieldValue
         }
+
         arr.push(obj)
       }
-
       const newData = await Data.create({
         fields: arr,
         locationId: location._id
@@ -242,6 +243,7 @@ const uploadDemoCsv = async (req, res) => {
       result: collection,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       success: false,
       message: "Error uploading new csv data",
