@@ -8,7 +8,11 @@ const login = async (req, res) => {
   try {
     const { email, password, /* remember */ } = req.body
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ email }, {
+      attributes: {
+        exclude: ['password']
+      }
+    })
 
     if(!user || !compareSync(password, user.password)) {
       return res.status(500).send(
@@ -22,7 +26,6 @@ const login = async (req, res) => {
       options.expiresIn = '2d'
     } */
 
-    // Create a JSON Web Token
     const token = sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' })
 
     return res.status(200).json({
