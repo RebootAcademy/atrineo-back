@@ -8,7 +8,7 @@ const login = async (req, res) => {
   try {
     const { email, password, /* remember */ } = req.body
 
-    const user = await User.findOne({ email }, '-password')
+    const user = await User.findOne({ email })
 
     if(!user || !compareSync(password, user.password)) {
       return res.status(500).send(
@@ -24,10 +24,13 @@ const login = async (req, res) => {
 
     const token = sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' })
 
+    const userObject = user.toObject()
+    delete userObject.password
+
     return res.status(200).json({
       success: true,
       message: 'User logged in',
-      result: {token, user}
+      result: {token, userObject}
     })
 
   } catch (error) {
