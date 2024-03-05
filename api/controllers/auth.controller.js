@@ -30,7 +30,7 @@ const login = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'User logged in',
-      result: {token, userObject}
+      result: {token, user: userObject}
     })
 
   } catch (error) {
