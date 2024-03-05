@@ -23,7 +23,15 @@ const collectionSchema = new Schema({
   collectionType: {
     type: String,
     enum: ["startups", "regions"],
-    required: [true, "Please select type"]
+    required: [true, "Please select type"],
+  },
+  latitude: {
+    type: Number,
+    default: 48.6
+  },
+  longitude: {
+    type: Number,
+    default: 9
   },
 });
 
