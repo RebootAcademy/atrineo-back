@@ -216,6 +216,8 @@ const uploadDemoCsv = async (req, res) => {
         obj.fieldName = key
 
         if (key === 'latitude' || key === 'longitude') {
+          console.log(element[key])
+          console.log(key)
           obj.fieldValue = parseFloat(element[key].replace(',', '.'))
         } else {
           obj.fieldValue = element[key]
