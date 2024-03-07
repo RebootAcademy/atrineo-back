@@ -218,6 +218,7 @@ const uploadDemoCsv = async (req, res) => {
             obj.fieldValue = parseFloat(element[key].replace(',', '.'))
           } else {
             obj.fieldValue = element[key]
+          }
         } else {
           obj.fieldValue = element[key]
         }
