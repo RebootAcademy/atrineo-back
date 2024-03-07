@@ -188,8 +188,6 @@ const deleteData = async (req, res) => {
 }
 
 const uploadDemoCsv = async (req, res) => {
-  console.log('updating')
-  console.log(req.body)
   try {
     const { body, collectionType } = req.body
 
@@ -216,8 +214,7 @@ const uploadDemoCsv = async (req, res) => {
         obj.fieldName = key
 
         if (key === 'latitude' || key === 'longitude') {
-          console.log(element[key])
-          console.log(key)
+          console.log(typeof element[key])
           obj.fieldValue = parseFloat(element[key].replace(',', '.'))
         } else {
           obj.fieldValue = element[key]
