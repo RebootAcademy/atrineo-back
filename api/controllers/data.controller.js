@@ -188,6 +188,8 @@ const deleteData = async (req, res) => {
 }
 
 const uploadDemoCsv = async (req, res) => {
+  console.log('updating')
+  console.log(req.body)
   try {
     const { body, collectionType } = req.body
 
