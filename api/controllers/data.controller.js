@@ -237,7 +237,7 @@ const uploadDemoCsv = async (req, res) => {
         fields: arr,
         locationId: location._id
       })
-      console.log(collection)
+
       collection.data.push(
         newData._id
       )
