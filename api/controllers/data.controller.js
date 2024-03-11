@@ -218,10 +218,13 @@ const uploadDemoCsv = async (req, res) => {
         } else {
           obj.fieldValue = element[key]
         }
-        if (element[key] === 'FALSE' || element[key] === 'TRUE') {
-          obj.fieldType = 'boolean'
+        if (
+          (typeof element[key] === "string" && element[key].toUpperCase() === "FALSE") ||
+          (typeof element[key] === "string" && element[key].toUpperCase() === "TRUE")
+        ) {
+          obj.fieldType = "boolean";
         } else {
-          obj.fieldType = typeof obj.fieldValue
+          obj.fieldType = typeof obj.fieldValue;
         }
 
         arr.push(obj)
