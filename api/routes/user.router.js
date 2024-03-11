@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const { 
-  isAdmin, isWizard
+  isAuth, isAdmin, isWizard
 } = require('../middlewares')
 
 const { 
@@ -10,6 +10,7 @@ const {
   getUserById,
   updateUser,
   deleteUser,
+  getOwnProfile,
   createOwnOrganizationUser,
   getAllOwnOrganizationUsers,
   getOwnOrganizationUserById,
@@ -19,6 +20,7 @@ const {
 
 router
   // admin organization routes
+  .get('/profile', getOwnProfile)
   .post('/admin', isAdmin, createOwnOrganizationUser)
   .get('/admin', isAdmin, getAllOwnOrganizationUsers)
   .get('/admin/:id', isAdmin, getOwnOrganizationUserById)

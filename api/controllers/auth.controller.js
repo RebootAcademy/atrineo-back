@@ -22,13 +22,15 @@ const login = async (req, res) => {
       options.expiresIn = '2d'
     } */
 
-    // Create a JSON Web Token
     const token = sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' })
+
+    const userObject = user.toObject()
+    delete userObject.password
 
     return res.status(200).json({
       success: true,
       message: 'User logged in',
-      result: token
+      result: {token, user: userObject}
     })
 
   } catch (error) {

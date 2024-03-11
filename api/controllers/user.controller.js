@@ -87,6 +87,31 @@ const getUserById = async (req, res) => {
   }
 }
 
+const getOwnProfile = async (req, res) => {
+  try {
+    const user = await User.findById(res.locals.user.id, '-password').populate("organizationId");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Fetching profile OK",
+      result: user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching profile",
+      description: error.message,
+    });
+  }
+}
+
 // UPDATE/PATCH - update ONE user by id
 const updateUser = async (req, res) => {
   try {
@@ -317,6 +342,7 @@ module.exports = {
   createUser,
   getAllUsers,
   getUserById,
+  getOwnProfile,
   updateUser,
   deleteUser,
   createOwnOrganizationUser,
