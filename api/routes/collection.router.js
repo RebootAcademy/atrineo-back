@@ -21,7 +21,7 @@ router
   .get('/', isAuth, isWizard, getAllCollections)
   .get('/public', getPublicCollections)
   .get('/organization', isAuth, getAllOwnOrganizationCollections)
-  .get('/:id', getCollectionById)
+  .get('/:id', isAuth, isWizard, getCollectionById)
   .patch('/:id', isAuth, isWizard, updateCollection)
   .patch('/:id/add', isAuth, isWizard, addDataToCollection)
   .delete('/:id', isAuth, isWizard, deleteCollection)
