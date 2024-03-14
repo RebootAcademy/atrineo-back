@@ -189,11 +189,12 @@ const deleteData = async (req, res) => {
 
 const uploadDemoCsv = async (req, res) => {
   try {
-    const { body, collectionType } = req.body
+    const { body, collectionType, name } = req.body
 
     const collection = await Collection.findByIdAndUpdate(process.env.DEMO_ID, {
       data: [],
-      collectionType
+      collectionType,
+      name
     });
 
     await Data.deleteMany({})

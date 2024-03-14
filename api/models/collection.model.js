@@ -6,6 +6,10 @@ const collectionSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  name: {
+    type: String,
+    default: 'No name'
+  },
   ownerId: {
     type: Schema.Types.ObjectId,
     ref: "organization",
