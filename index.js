@@ -13,7 +13,7 @@ const dbConnect = require('./database')
 const app = express()
   .use(cors())
   .use(morgan('dev'))
-  .use(express.json({ limit: '10mb' }))
+  .use(express.json({ limit: '100mb' }))
   .use(express.urlencoded({ extended: true }))
   .use('/api', require('./api/routes'))
   .listen(process.env.PORT, async (error) => {

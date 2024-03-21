@@ -17,18 +17,19 @@ const createDivision4 = async (req, res) => {
       })
     }
 
-    const dataFilter = cities.filter((city) => city.division1 === "Baden-Württemberg")
+    //const dataFilter = cities.filter((city) => city.division1 === "Baden-Württemberg")
 
-    for (const city of dataFilter) {
+    for (const city of cities) {
       const { postalCode, cityName, division1 } = city
       let { division3 } = city
       let referencedId, referencedModel, division3Data, division1Data;
 
       const existingDivision = await Division4.findOne({ name: cityName })
-
       if (existingDivision) {
-        existingDivision.postalCode.push(postalCode)
-        await existingDivision.save()
+        if (!existingDivision.postalCode.includes(postalCode)){
+          existingDivision.postalCode.push(postalCode)
+          await existingDivision.save()
+        }
 
         const existingDivisionIndex = newDivisionsArray.findIndex(
           (item) => item.division4._id.toString() === existingDivision._id.toString()
@@ -41,7 +42,6 @@ const createDivision4 = async (req, res) => {
       } else {
         if(division3) {
           division3 = cleanDistrictName(division3)
-
           division3Data = await Division3.findOne({ name: division3 })
             .populate({
               path: 'upperDivision',
@@ -50,22 +50,26 @@ const createDivision4 = async (req, res) => {
               },
             })
             .exec();
-          
           referencedId = division3Data._id
           referencedModel = "division3"
 
         } else {
           division1Data = await Division1.findOne({ name: division1 })
-
           referencedId = division1Data._id
           referencedModel = "division1"
         }
-    
+
+        const coordinates = city.coordinates.split(", ");
+        const latitude = parseFloat(coordinates[0])
+        const longitude = parseFloat(coordinates[1])
+
         const newDivision4 = await Division4.create ({
           name: cityName,
           postalCode,
           referencedId,
           referencedModel,
+          latitude,
+          longitude
         })
 
         const location = await createLocationInDivision4({
@@ -144,11 +148,17 @@ const createOneDivision4 = async (req, res) => {
         referencedModel = 'division1'
       }
 
+      const coordinates = city.coordinates.split(", ");
+      const latitude = parseFloat(coordinates[0]);
+      const longitude = parseFloat(coordinates[1]);
+
       const newDivision4 = await Division4.create({
         name: cityName,
         postalCode,
         referencedId,
         referencedModel,
+        latitude,
+        longitude
       })
 
       await createLocation({
@@ -277,21 +287,19 @@ const deleteDivision4 = async (req, res) => {
 
 const addCoordinates = async (req, res) => {
   try {
-    const { body } = req.body
-    await Promise.all(body.map(async district => {
-      const lat = district.latitude.replace(',', '.')
-      const lon = district.longitude.replace(",", ".");
+    const cities = req.body;
+    
+    await Promise.all(cities.map(async district => {
+      const coordinates = district.coordinates.split(', ')
+      const lat = parseFloat(coordinates[0])
+      const lon = parseFloat(coordinates[1])
 
       await Division4.findOneAndUpdate(
-        { name: district.districtName },
+        { name: district.cityName },
         {
           $set: {
             latitude: lat,
             longitude: lon
-          },
-          $unset: {
-            lat: '',
-            lon: ''
           }
         }
       );
