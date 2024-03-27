@@ -115,6 +115,11 @@ const getOwnProfile = async (req, res) => {
 // UPDATE/PATCH - update ONE user by id
 const updateUser = async (req, res) => {
   try {
+
+    if (req.body.password) {
+      req.body.password = hashPassword(req.body.password);
+    }
+    
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -277,6 +282,11 @@ const getOwnOrganizationUserById = async (req, res) => {
 // UPDATE/PATCH - update ONE user by id
 const updateOwnOrganizationUser = async (req, res) => {
   try {
+
+    if (req.body.password) {
+      req.body.password = hashPassword(req.body.password)
+    }
+
     const updatedUser = await User.findOneAndUpdate(
       { 
         _id: req.params.id,

@@ -48,7 +48,15 @@ const createLocationInDivision4 = async (locations) => {
 
 const getAllLocations = async (req, res) => {
   try {
-    const locations = await Location.find()
+    const locations = await Location.find(req.query)
+      .select("-_id -__v")
+      .populate([
+        { path: "country", select: "name -_id" },
+        { path: "division1", select: "name -_id" },
+        { path: "division2", select: "name -_id" },
+        { path: "division3", select: "name -_id" },
+        { path: "division4", select: "name postalCode -_id" },
+      ]);
 
     return res.status(200).json({
       success: true,
